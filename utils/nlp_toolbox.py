@@ -1,6 +1,5 @@
 # coding: utf-8
 
-import string
 import spacy
 from nltk.corpus import stopwords
 import string
@@ -29,29 +28,29 @@ class Tokenizer():
 
 
 class Cleaner():
-    def __init__(self, nltk_lang) -> None:
-        self.stopwords = set(stopwords.words(nltk_lang))
+    def __init__(self) -> None:
         self.punctuation = string.punctuation
-        ...
 
-    def remove_stopwords(self, tokens: list, tokens_type: str) -> list:
+    def remove_stopwords(
+        self,
+        nltk_lang: str,
+        tokens: list,
+        tokens_type: str
+    ):
         """tokens_type: word, sentence"""
+        stop_words = set(stopwords.words(nltk_lang))
         if tokens_type == "word":
-            cleaner_tokens = [token for token in tokens if token not in self.stopwords]
+            cleaner_tokens = [token for token in tokens if token not in stop_words]
             return cleaner_tokens
         elif tokens_type == "sentence":
-            ...
+            regex = re.compile("\w+")
+            sentence = "".join(tokens)
+            tokens = re.findall(regex, sentence)
+            cleaner_tokens = [token for token in tokens if token not in stop_words]
+            return cleaner_tokens
         else:
             ...
     
-    def remove_punctuations(self, tokens: list):
-        cleaner_tokens = [token for token in tokens if token not in self.punctuation]
-        return cleaner_tokens
-
-
-
-
-
-
-
-
+    def remove_punctuations(self, sentence: str):
+        cleaner_sentence = [char for char in sentence if char not in self.punctuation]
+        return "".join(cleaner_sentence).strip()
