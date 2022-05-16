@@ -12,7 +12,6 @@ nltk = "^3.7"
 tensorflow = "^2.8.0"
 scikit-learn = "^1.1.0"
 "pdfminer.six" = {extras = ["image"], version = "^20220506"}
-PyPDF2 = "^1.27.12"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.13.9"
