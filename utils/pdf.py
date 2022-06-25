@@ -63,5 +63,4 @@ class Pdf():
 if __name__ == '__main__':
     pdf = Pdf()
     r = pdf.extract_pages_text('dataset/pdf/test/test.pdf', "paragraph", [1])
-  
     print(r)
