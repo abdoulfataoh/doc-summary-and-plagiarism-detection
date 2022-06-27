@@ -1,56 +1,46 @@
 # coding: utf-8
 
+from lib2to3.pgen2 import token
+import re
+
 import spacy
+import nltk
 from nltk.corpus import stopwords
 import string
-import re
+from unidecode import unidecode
+
+
+def unidecoder(text):
+    return (unidecode(text))
 
 
 class Tokenizer():
-    def __init__(self, spacy_lang: str) -> None:
-        self.nlp = spacy.load(spacy_lang)
+    def __init__(self, spacy_lang: str, nltk_lang) -> None:
+        self.nlp = spacy.load(spacy_lang) #spacy_lang: en_core_web_sm, fr_core_web_sm
+        self.stop_words = set(stopwords.words(nltk_lang))
 
-    def get_words_tokens(self, sentences: str) -> list:
-        doc = self.nlp(sentences)
-        tokens = [word.text for word in doc]
-        return tokens
-
-    def get_sentences_tokens(self, sentences: str) -> list:
-        doc = self.nlp(sentences)
-        tokens = [sentences.text for sentences in doc.sents]
-        return tokens
-
-    @staticmethod
-    def get_characters_tokens(sentences: str) -> list:
-        doc = sentences
-        tokens = list(doc)
-        return tokens
-
-
-class Cleaner():
-    def __init__(self) -> None:
-        self.punctuation = string.punctuation
-
-    def remove_stopwords(
-        self,
-        nltk_lang: str,
-        tokens: list,
-        tokens_type: str
-    ):
-        """tokens_type: word, sentence"""
-        stop_words = set(stopwords.words(nltk_lang))
-        if tokens_type == "word":
-            cleaner_tokens = [token for token in tokens if token not in stop_words]
-            return cleaner_tokens
-        elif tokens_type == "sentence":
-            regex = re.compile("\w+")
-            sentence = "".join(tokens)
-            tokens = re.findall(regex, sentence)
-            cleaner_tokens = [token for token in tokens if token not in stop_words]
-            return cleaner_tokens
+    def get_words_tokens(self, text: str, remove_punctuation: bool, remove_stopword: bool) -> list:
+        doc = self.nlp(text)
+        tokens = []
+        if remove_punctuation:
+            for token in doc:
+                if not token.is_punct:
+                    token = str(token).strip()
+                    if remove_stopword:
+                        if token not in self.stop_words and token != "":
+                            tokens.append(token)
+                    else:
+                        tokens.append(token)
         else:
-            ...
-    
-    def remove_punctuations(self, sentence: str):
-        cleaner_sentence = [char for char in sentence if char not in self.punctuation]
-        return "".join(cleaner_sentence).strip()
+            for token in doc:
+                token = str(token).strip()
+                if remove_stopword:
+                    if token not in self.stop_words and token != "":
+                        tokens.append(token)
+                    else:
+                        continue
+                else:
+                    tokens.append(token)
+            
+        return tokens
+ 
