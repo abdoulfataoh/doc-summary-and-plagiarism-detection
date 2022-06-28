@@ -2,7 +2,6 @@
 
 from pathlib import Path
 import logging
-import json
 
 from utils.pdf import Pdf
 from utils.nlp_toolbox import Tokenizer
@@ -18,16 +17,16 @@ class DataLoader(object):
     def __init__(self, pdf_folder_path: str) -> None:
         self.pdf_folder_path = pdf_folder_path
         self.pdf_tool = Pdf()
-        ...
-    
+
     def get_pdf_files_name(self) -> list:
         pdf_files_name = []
         for pdf_file_name in Path(self.pdf_folder_path).glob("*.pdf"):
             pdf_files_name.append(pdf_file_name)
-        logger.info(f'we found {len(pdf_files_name)} pdf files from <{self.pdf_folder_path}>')
+        logger.info(
+            f'we found {len(pdf_files_name)} pdf files from <{self.pdf_folder_path}>'
+        )
         print(pdf_files_name[0])
         return pdf_files_name
-
 
     def load_cleaned_dataset(
         self,
@@ -45,7 +44,6 @@ class DataLoader(object):
         tokenizer = Tokenizer(spacy_lang)
         for index, item in enumerate(dataset):
             pdf_file_name = item["pdf_file_name"]
-            remove_items = []
             logger.info(f"clean {pdf_file_name}")
             item_text = unidecoder(item["text"])
             tokens = tokenizer.get_words_tokens(
@@ -55,7 +53,6 @@ class DataLoader(object):
                 remove_digit=remove_digit,
                 remove_space=remove_space,
             )
-            
             if return_tokens:
                 item["text"] = tokens
             else:
@@ -66,14 +63,13 @@ class DataLoader(object):
 
         return return_dataset
 
-
     def load_original_data(self, granularity: str) -> list:
         data = []
         for pdf_file_name in self.get_pdf_files_name():
-                logger.info(f'extract {granularity} from {pdf_file_name}')
-                data = data + self.pdf_tool.extract_text(pdf_file_name, granularity)
+            logger.info(f'extract {granularity} from {pdf_file_name}')
+            data = data + self.pdf_tool.extract_text(pdf_file_name, granularity)
         return data
-    
+
     @staticmethod
     def word2vec_tag_doc(dataset: list) -> list:
         granularity = dataset[0]["type"]
@@ -88,7 +84,11 @@ class DataLoader(object):
                 tagged_doc.append(
                     TaggedDocument(
                         words=text,
-                        tags=[paragraph["pdf_file_name"], paragraph["page_number"], paragraph["paragraphs_number"]]
+                        tags=[
+                                paragraph["pdf_file_name"],
+                                paragraph["page_number"],
+                                paragraph["paragraphs_number"]
+                        ]
                     )
                 )
         elif granularity == "page":
@@ -98,7 +98,11 @@ class DataLoader(object):
                 tagged_doc.append(
                     TaggedDocument(
                         words=text,
-                        tags=[page["pdf_file_name"], page["page_number"], page["page_number"]]
+                        tags=[
+                                page["pdf_file_name"],
+                                page["page_number"],
+                                page["page_number"]
+                        ]
                     )
                 )
         elif granularity == "document":
