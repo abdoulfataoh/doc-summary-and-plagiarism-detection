@@ -101,7 +101,7 @@ class DataLoader(object):
                         tags=[page["pdf_file_name"], page["page_number"], page["page_number"]]
                     )
                 )
-        elif granularity == "doc":
+        elif granularity == "document":
             for doc in dataset:
                 text = doc["text"]
                 logger.info(f"tag {text} by {text}")
@@ -112,4 +112,3 @@ class DataLoader(object):
                     )
                 )
         return tagged_doc
-
