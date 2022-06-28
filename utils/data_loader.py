@@ -73,3 +73,43 @@ class DataLoader(object):
                 logger.info(f'extract {granularity} from {pdf_file_name}')
                 data = data + self.pdf_tool.extract_text(pdf_file_name, granularity)
         return data
+    
+    @staticmethod
+    def word2vec_tag_doc(dataset: list) -> list:
+        granularity = dataset[0]["type"]
+        tagged_doc = []
+
+        logger.info(f"we will tag {granularity} by {granularity}")
+
+        if granularity == "paragraph":
+            for paragraph in dataset:
+                text = paragraph["text"]
+                logger.info(f"tag {text} by {text}")
+                tagged_doc.append(
+                    TaggedDocument(
+                        words=text,
+                        tags=[paragraph["pdf_file_name"], paragraph["page_number"], paragraph["paragraphs_number"]]
+                    )
+                )
+        elif granularity == "page":
+            for page in dataset:
+                text = page["text"]
+                logger.info(f"tag {text} by {text}")
+                tagged_doc.append(
+                    TaggedDocument(
+                        words=text,
+                        tags=[page["pdf_file_name"], page["page_number"], page["page_number"]]
+                    )
+                )
+        elif granularity == "doc":
+            for doc in dataset:
+                text = doc["text"]
+                logger.info(f"tag {text} by {text}")
+                tagged_doc.append(
+                    TaggedDocument(
+                        words=text,
+                        tags=[doc["pdf_file_name"]]
+                    )
+                )
+        return tagged_doc
+
