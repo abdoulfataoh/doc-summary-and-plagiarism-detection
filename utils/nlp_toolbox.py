@@ -1,9 +1,7 @@
 # coding: utf-8
 
 
-from pickle import TRUE
 import spacy
-import string
 from unidecode import unidecode
 
 
@@ -13,7 +11,7 @@ def unidecoder(text):
 
 class Tokenizer():
     def __init__(self, spacy_lang: str) -> None:
-        self.nlp = spacy.load(spacy_lang) #spacy_lang: en_core_web_sm, fr_core_web_sm
+        self.nlp = spacy.load(spacy_lang)
 
     def get_words_tokens(
         self,
@@ -40,8 +38,4 @@ class Tokenizer():
                     continue
             token_text = token.text
             tokens.append(token_text.strip().lower())
-    
         return tokens
-
-
-
