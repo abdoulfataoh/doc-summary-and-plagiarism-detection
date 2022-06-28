@@ -5,8 +5,6 @@ import logging
 from pathlib import Path
 
 import fitz
-from numpy import sort
-
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -16,8 +14,11 @@ class Pdf():
     def __init__(self) -> None:
         ...
 
-
-    def extract_text(self, pdf_file_path: str, granularity: str, page_numbers: list = []):
+    def extract_text(
+        self, pdf_file_path: str,
+        granularity: str,
+        page_numbers: list = []
+    ):
         pdf_file_name = Path(pdf_file_path).name
         doc = fitz.open(pdf_file_path)
         data = []
@@ -42,11 +43,10 @@ class Pdf():
             else:
                 doc_pages = list(doc.pages())
                 for number in page_numbers:
-                    number = number - 1 # the first page number is 0
+                    number = number - 1  # the first page number is 0
                     page = doc_pages[number]
                     data = data + self._extract_text(page, pdf_file_name, granularity)
                 return data
-
 
     def _extract_text(self, page, pdf_file_name: str, granularity: str) -> list:
         page_number = page.number + 1
@@ -59,13 +59,13 @@ class Pdf():
                         "page_number": page_number,
                         "text": page_text
                     }
-            ]        
+            ]
             return page_text
         elif granularity == "paragraph":
             paragraphs = []
             blocks = page.get_text("blocks", sort=True)
             for block in blocks:
-                if block[6] == 0: #if  block contain text
+                if block[6] == 0:  # if  block contain text
                     paragraphs_text = block[4]
                     paragraphs_number = block[5]
                     paragraphs.append(
@@ -95,9 +95,3 @@ class Pdf():
                     }
                 )
             return words
-                       
-
-if __name__ == '__main__':
-    pdf = Pdf()
-    r = pdf.extract_text('dataset/pdf/test/test-2.pdf', "document")
-    print(r)
