@@ -80,14 +80,16 @@ class DataLoader(object):
         if granularity == "paragraph":
             for paragraph in dataset:
                 text = paragraph["text"]
-                logger.info(f"tag {text} by {text}")
+                logger.info(f"tag {text} by {text} \n")
                 tagged_doc.append(
                     TaggedDocument(
                         words=text,
                         tags=[
-                                paragraph["pdf_file_name"],
-                                paragraph["page_number"],
-                                paragraph["paragraphs_number"]
+                                (
+                                    paragraph["pdf_file_name"],
+                                    paragraph["page_number"],
+                                    paragraph["paragraphs_number"]
+                                )
                         ]
                     )
                 )
@@ -99,9 +101,11 @@ class DataLoader(object):
                     TaggedDocument(
                         words=text,
                         tags=[
-                                page["pdf_file_name"],
-                                page["page_number"],
-                                page["page_number"]
+                                (
+                                    page["pdf_file_name"],
+                                    page["page_number"],
+                                    page["page_number"]
+                                )
                         ]
                     )
                 )
@@ -112,7 +116,7 @@ class DataLoader(object):
                 tagged_doc.append(
                     TaggedDocument(
                         words=text,
-                        tags=[doc["pdf_file_name"]]
+                        tags=[(doc["pdf_file_name"])]
                     )
                 )
         return tagged_doc
