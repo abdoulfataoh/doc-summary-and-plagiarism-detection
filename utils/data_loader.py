@@ -104,7 +104,6 @@ class DataLoader(object):
                                 (
                                     page["pdf_file_name"],
                                     page["page_number"],
-                                    page["page_number"]
                                 )
                         ]
                     )
@@ -116,7 +115,11 @@ class DataLoader(object):
                 tagged_doc.append(
                     TaggedDocument(
                         words=text,
-                        tags=[(doc["pdf_file_name"])]
+                        tags=[
+                                (
+                                    doc["pdf_file_name"]
+                                )
+                        ]
                     )
                 )
         return tagged_doc
