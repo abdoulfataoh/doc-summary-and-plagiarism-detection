@@ -16,4 +16,4 @@ The pdf module [(utils/pdf)](https://github.com/abdoulfataoh/doc-summary-and-pla
 </p>
 
 ### DataLoader module
-Le module DataLoader charge tous les jeux de données (*.pdf) à partir d'un dossier contenant des fichiers pdf. Il utilise d'abord le module pdf pour extraire le texte de tous les fichiers pdf, ensuite il utilise le module Tokenize de nlp_tool.py pour la tokenisation, la suppression des mots vides, enfin il contient des méthodes statiques pour le balisage des documents ...
+Le module DataLoader charge tous les jeux de données (*.pdf) à partir d'un dossier contenant des fichiers pdf. Il utilise d'abord le module pdf pour extraire le texte de tous les fichiers pdf, ensuite il utilise le module Tokenize de nlp_tool.py pour la tokenisation, la suppression des mots vides, enfin il contient des méthodes statiques pour le balisage des documents.
