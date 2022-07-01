@@ -9,6 +9,8 @@ We use poetry for creation virtual environement and python dependencies manageme
 - ```poetry shell``` to enable the project virtual environement
  
 ### Pdf module
-The pdf module can extract text from pdf files with **"paragraph"**, **"page"**, **"document"** as granulaties options
+The pdf module [(utils/pdf)](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/utils/pdf.py) can extract text from pdf files with **"paragraph"**, **"page"**, **"document"** as granulaties options
 
-![pdf_extractor](https://drive.google.com/uc?export=download&id=1Cx1TngBWoMn92GF9voF6ZHVbkhhKcfzh)
+<p align="left">
+  <img width="500" src="https://drive.google.com/uc?export=download&id=1Cx1TngBWoMn92GF9voF6ZHVbkhhKcfzh">
+</p>
