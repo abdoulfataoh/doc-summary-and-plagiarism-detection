@@ -14,3 +14,6 @@ The pdf module [(utils/pdf)](https://github.com/abdoulfataoh/doc-summary-and-pla
 <p align="left">
   <img width="500" src="https://drive.google.com/uc?export=download&id=1Cx1TngBWoMn92GF9voF6ZHVbkhhKcfzh">
 </p>
+
+### DataLoader module
+The DataLoader module load all dataset (*.pdf) from a folder that contain pdf files. It use the Tokenizer from nlp_tool.py to tokenize and clean stopwords and return 
