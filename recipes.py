@@ -4,8 +4,9 @@ import json
 from pathlib import Path
 
 from utils.data_loader import DataLoader
+from config import Config
 
-def make_clean_datasets(dataset_path: str, cache_foler_path: str, granularities: list):
+def make_clean_datasets(dataset_path: str, save_folder_path: str, granularities: list):
     for granulaty in granularities:
         dataloader = DataLoader(dataset_path)
         dataset = dataloader.load_cleaned_dataset(
@@ -15,14 +16,14 @@ def make_clean_datasets(dataset_path: str, cache_foler_path: str, granularities:
             remove_stopword=True,
             remove_digit=True,
             remove_space=True,
-            return_tokens=False
+            return_tokens=True
         )
-        file_path = Path(cache_foler_path, f"dataset-clean-{granulaty}-text.json")
+        file_path = Path(save_folder_path, f"dataset-clean-{granulaty}.json")
         with open(file_path, 'w') as file:
-            json.dump(dataset, file)
+            json.dump(dataset, file, indent=2)
 
 
-# make_clean_datasets(r'dataset/pdf', ["paragraph", "page", "document"])
+make_clean_datasets(Config.DATASET_PATH, Config.TRAIN_DATASET_PATH, ["document"])
 
 
 def make_tag_doc(dataset_json_path: str, save_file_path):
