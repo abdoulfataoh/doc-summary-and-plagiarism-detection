@@ -8,4 +8,4 @@ class Config():
     TRAIN_DATASET_PATH = Path(r"assets/datasets")
     TRAIN_MODELS_PATH = Path(r"assets/models")
     SPACY_MODEL = "fr_core_news_sm"
-
+    WORKERS = 2
