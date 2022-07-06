@@ -14,23 +14,29 @@ logger = logging.getLogger(__name__)
 
 class DataLoader(object):
 
-    def __init__(self, pdf_folder_path: str) -> None:
-        self.pdf_folder_path = pdf_folder_path
+    def __init__(self, pdfs_path: str) -> None:
+        self.pdfs_path = pdfs_path
         self.pdf_tool = Pdf()
 
     def get_pdf_files_name(self) -> list:
         pdf_files_name = []
-        for pdf_file_name in Path(self.pdf_folder_path).glob("*.pdf"):
-            pdf_files_name.append(pdf_file_name)
-        logger.info(
-            f'we found {len(pdf_files_name)} pdf files from <{self.pdf_folder_path}>'
-        )
-        print(pdf_files_name[0])
+        if Path(self.pdfs_path).is_file():
+            logger.info(
+                f'we found one (01) pdf file from <{self.pdfs_path}>'
+            )
+            pdf_files_name.append(self.pdfs_path)
+        elif Path(self.pdfs_path).is_dir():
+            for pdf_file_name in Path(self.pdfs_path).glob("*.pdf"):
+                pdf_files_name.append(pdf_file_name)
+            logger.info(
+                f'we found {len(pdf_files_name)} pdf files from <{self.pdfs_path}>'
+            )
+            print(pdf_files_name[0])
         return pdf_files_name
 
     def load_cleaned_dataset(
         self,
-        granularity: str,
+        dataset: list,
         spacy_lang: str,
         remove_punctuation: bool,
         remove_stopword: bool,
@@ -38,7 +44,6 @@ class DataLoader(object):
         remove_space: bool,
         return_tokens: bool
     ):
-        dataset = self.load_original_data(granularity)
         return_dataset = []
         logger.info("load clean dataset")
         tokenizer = Tokenizer(spacy_lang)
