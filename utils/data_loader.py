@@ -49,7 +49,6 @@ class DataLoader(object):
         tokenizer = Tokenizer(spacy_lang)
         for index, item in enumerate(dataset):
             pdf_file_name = item["pdf_file_name"]
-            logger.info(f"clean {pdf_file_name}")
             item_text = unidecoder(item["text"])
             tokens = tokenizer.get_words_tokens(
                 text=item_text,
@@ -85,7 +84,6 @@ class DataLoader(object):
         if granularity == "paragraph":
             for paragraph in dataset:
                 text = paragraph["text"]
-                logger.info(f"tag {text} by {text} \n")
                 tagged_doc.append(
                     TaggedDocument(
                         words=text,
@@ -101,7 +99,6 @@ class DataLoader(object):
         elif granularity == "page":
             for page in dataset:
                 text = page["text"]
-                logger.info(f"tag {text} by {text}")
                 tagged_doc.append(
                     TaggedDocument(
                         words=text,
@@ -116,7 +113,6 @@ class DataLoader(object):
         elif granularity == "document":
             for doc in dataset:
                 text = doc["text"]
-                logger.info(f"tag {text} by {text}")
                 tagged_doc.append(
                     TaggedDocument(
                         words=text,
