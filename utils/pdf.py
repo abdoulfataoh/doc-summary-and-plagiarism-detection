@@ -2,96 +2,72 @@
 
 
 import logging
+from typing import List, Union
 from pathlib import Path
 
 import fitz
+from unidecode import unidecode
+
+from enumerations import Granularity
+from entities import Document, Page, Paragraph
+
+
+__all__ = [
+    'Pdf',
+]
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
 class Pdf():
+
     def __init__(self) -> None:
         ...
 
     def extract_text(
-        self, pdf_file_path: str,
-        granularity: str,
-        page_numbers: list = []
-    ):
-        pdf_file_name = Path(pdf_file_path).name
-        doc = fitz.open(pdf_file_path)
+        self,
+        pdf_path: str,
+        granularity: Granularity
+    ) -> List[Union[Document, Page, Paragraph]]:
+
+        file_name = Path(pdf_path).name
+        doc = fitz.open(pdf_path)
         data = []
-        if granularity == "document":
-            pages_text = ""
+
+        if granularity == Granularity.DOCUMENT:
+            document_text = ''
             for page in doc:
-                pages_text = pages_text + "\n\n" + page.get_text()
-            data.append(
-                {
-                    "type": granularity,
-                    "pdf_file_name": pdf_file_name,
-                    "text": pages_text
+                document_text = document_text + '\n' + page.get_text()
+                document_text = unidecode(document_text)
+            document = Document(file_name, document_text)
+            data.append(document)
 
-                }
-            )
-            return data
+        elif granularity == Granularity.PAGE:
+            for page in doc:
+                page_number = page.number + 1
+                page_text = page.get_text()
+                page = Page(file_name, page_number, page_text)
+                data.append(page)
+
+        elif granularity == Granularity.PARAGRAPH:
+            for page in doc:
+                page_number = page.number + 1
+                blocks = page.get_text('blocks', sort=True)
+                for block in blocks:
+                    if block[6] == 0:  # if block contain text
+                        block_number = block[5] + 1
+                        block_text = block[4]
+                        paragraph = Paragraph(
+                            file_name,
+                            page_number,
+                            block_number,
+                            block_text
+                        )
+                        data.append(paragraph)
+
         else:
-            if page_numbers == []:
-                for page in doc.pages():
-                    data = data + self._extract_text(page, pdf_file_name, granularity)
-                return data
-            else:
-                doc_pages = list(doc.pages())
-                for number in page_numbers:
-                    number = number - 1  # the first page number is 0
-                    page = doc_pages[number]
-                    data = data + self._extract_text(page, pdf_file_name, granularity)
-                return data
+            ...
 
-    def _extract_text(self, page, pdf_file_name: str, granularity: str) -> list:
-        page_number = page.number + 1
-        if granularity == "page":
-            page_text = page.get_text()
-            return [
-                    {
-                        "type": granularity,
-                        "pdf_file_name": pdf_file_name,
-                        "page_number": page_number,
-                        "text": page_text
-                    }
-            ]
-            return page_text
-        elif granularity == "paragraph":
-            paragraphs = []
-            blocks = page.get_text("blocks", sort=True)
-            for block in blocks:
-                if block[6] == 0:  # if  block contain text
-                    paragraphs_text = block[4]
-                    paragraphs_number = block[5]
-                    paragraphs.append(
-                        {
-                            "type": granularity,
-                            "pdf_file_name": pdf_file_name,
-                            "page_number": page_number,
-                            "paragraphs_number": paragraphs_number,
-                            "text": paragraphs_text
-                        }
-                    )
-            return paragraphs
-        elif granularity == "word":
-            words = []
-            word_number = 1
-            for word in page.get_text("words", sort=True):
-                words_text = word[4]
-                word_number = word_number + 1
-                words.append(
-                    {
-                        "type": granularity,
-                        "pdf_file_name": pdf_file_name,
-                        "page_number": page_number,
-                        "word_number": word_number,
-                        "text": words_text
-
-                    }
-                )
-            return words
+        return data
