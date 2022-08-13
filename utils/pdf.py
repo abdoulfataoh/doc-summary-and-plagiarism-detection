@@ -48,6 +48,7 @@ class Pdf():
             for page in doc:
                 page_number = page.number + 1
                 page_text = page.get_text()
+                page_text = unidecode(page_text)
                 page = Page(file_name, page_number, page_text)
                 data.append(page)
 
@@ -59,6 +60,7 @@ class Pdf():
                     if block[6] == 0:  # if block contain text
                         block_number = block[5] + 1
                         block_text = block[4]
+                        block_text = unidecode(block_text)
                         paragraph = Paragraph(
                             file_name,
                             page_number,
