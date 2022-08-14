@@ -6,7 +6,12 @@ import spacy
 from spacy.lang.fr import French
 from spacy.lang.en import English
 
-from enumerations import Granularity
+from utils.enumerations import Granularity
+
+
+__all__ = [
+    'TextCleaner',
+]
 
 
 class TextCleaner():

@@ -8,8 +8,8 @@ from pathlib import Path
 import fitz
 from unidecode import unidecode
 
-from enumerations import Granularity
-from entities import Document, Page, Paragraph
+from utils.enumerations import Granularity
+from utils.entities import Document, Page, Paragraph
 
 
 __all__ = [
