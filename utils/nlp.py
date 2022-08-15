@@ -29,7 +29,7 @@ class TextCleaner():
         remove_digit: bool,
         remove_space: bool,
         return_word_list: bool
-    ) -> List[str]:
+    ) -> Union[List[str], str]:
 
         doc = self._nlp(text)
         cleaned_words = []
