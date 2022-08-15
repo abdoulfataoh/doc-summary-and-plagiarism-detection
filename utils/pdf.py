@@ -73,3 +73,18 @@ class Pdf():
             ...
 
         return data
+
+    def highlight_annot(
+        self,
+        doc: fitz,
+        page: int,
+        pattern: str,
+        content: str = ''
+    ) -> bool:
+
+        page = doc[page]
+        quads = page.search_for(pattern, quads=True)
+        annot = page.add_highlight_annot(quads)
+        annot.set_info(content=content)
+
+        return True
