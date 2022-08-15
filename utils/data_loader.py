@@ -105,5 +105,5 @@ class DataLoader:
 
     @text_cleaner.deleter
     def text_cleaner(self) -> bool:
-        logger.warning("deleting text cleaner is not allowed")
+        logger.warning("deleting text_cleaner is not allowed")
         return False
