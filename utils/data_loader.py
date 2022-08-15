@@ -44,8 +44,8 @@ class DataLoader:
         dataset = []
         for pdf_path in self._listed_files:
             log_msg = f"load {pdf_path} data ..."
-            data = {pdf_path: self._pdf.extract_text(pdf_path, granularity)}
-            dataset.append(data)
+            data = self._pdf.extract_text(pdf_path, granularity)
+            dataset.extend(data)
             logger.info(log_msg)
 
         return dataset
@@ -62,21 +62,18 @@ class DataLoader:
     ) -> List[Union[Document, Page, Paragraph]]:
 
         for data in dataset:
-            data_name = [key for key in data.keys()].pop()
-            data_value = [value for value in data.values()].pop()
-            log_msg = f"clean {data_name} ..."
+            log_msg = f"clean {data.file_name} ..."
             logger.info(log_msg)
-            for entity in data_value:
-                entity_text = entity.text
-                clean_entity_text = self._text_cleaner.clean(
-                    text=entity_text,
-                    remove_punctuation=remove_punctuation,
-                    remove_stopword=remove_stopword,
-                    remove_digit=remove_digit,
-                    remove_space=remove_space,
-                    return_word_list=return_word_list
-                )
-                entity.cleaned_text = clean_entity_text
+            text = data.text
+            clean_text = self._text_cleaner.clean(
+                text=text,
+                remove_punctuation=remove_punctuation,
+                remove_stopword=remove_stopword,
+                remove_digit=remove_digit,
+                remove_space=remove_space,
+                return_word_list=return_word_list
+            )
+            data.cleaned_text = clean_text
 
     def _listing_pdf_files(self, files_path: Union[str, Path]) -> List[str]:
         files_path = Path(files_path)
