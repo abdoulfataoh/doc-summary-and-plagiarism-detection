@@ -1,55 +1,68 @@
 # coding: utf-8
 
-from distutils.command.clean import clean
-import logging
-import json
-import sys
 
-from config import Config
-from utils.data_loader import DataLoader
-from models.doc2vec import Doc2vec
+import logging
+import pickle
+from gensim.models.doc2vec import Doc2Vec
+from gensim.models.doc2vec import TaggedDocument
+
+from utils import pdf
+from utils import text_cleaner
+from utils import Config
+from utils import DataLoader
+from utils import Granularity
+from models.plagiarism import all_mini_lm, doc2vec
+from models.plagiarism import distiluse
+from models.plagiarism import camembert_large
+
+
+__all__ = [
+    'TrainPlagiarismDetectionModels',
+    'PlagiarismDetectionEmbeddings',
+]
 
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-dataloader = DataLoader(Config.DATASET_PATH)
+dataloader = DataLoader(Config.DATASET_PATH, pdf, text_cleaner)
+# dataloader = DataLoader('dataset/test', pdf, text_cleaner)
 
-class TrainPlagiarismDetection():
-    def __init__(self, base_model, granularity) -> None:
-        if base_model == "doc2vec":
+
+class TrainPlagiarismDetectionModels():
+    def __init__(self, base_model, granularity: Granularity) -> None:
+        if base_model == "gensim_doc2vec":
 
             # load original dataset
-            dataset = dataloader.load_original_data(granularity=granularity)
+            dataset = dataloader.load_data(granularity=granularity)
 
             # cleaned dataset
-            cleaned_dataset = dataloader.load_cleaned_dataset(
+            dataloader.clean_data(
                 dataset=dataset,
-                spacy_lang=Config.SPACY_MODEL,
+                spacy_lang_model=Config.SPACY_MODEL,
                 remove_punctuation=True,
                 remove_stopword=True,
                 remove_digit=True,
                 remove_space=True,
-                return_tokens=True
+                return_word_list=True
             )
-    
-            # tag cleaned dataset
-            tagged_dataset = dataloader.word2vec_tag_doc(cleaned_dataset)
 
             # get model
-            model = Doc2vec().get_model(
+            model = doc2vec.get_model(
                 vector_size=100,
                 min_count=2,
                 epochs=100,
                 workers=Config.WORKERS
             )
 
+            docs = [TaggedDocument(d.cleaned_text, [str(d.id)]) for d in dataset]
+
             # build vocabulary
-            model.build_vocab(tagged_dataset)
+            model.build_vocab(docs)
 
             # train model
             model.train(
-                        tagged_dataset,
+                        docs,
                         total_examples=model.corpus_count,
                         epochs=model.epochs
             )
@@ -59,30 +72,128 @@ class TrainPlagiarismDetection():
             save_full_path = Config.TRAIN_MODELS_PATH / f"citadel-{granularity}-{base_model}.model"
             model.save(str(save_full_path))
 
-            # save original dataset
-            logger.info("save dataset")
-            with open(Config.TRAIN_DATASET_PATH / f"dataset-{granularity}.json", "w") as file:
-                json.dump(dataset, file, indent=2)
-            
-            # save cleaned dataset
-            logger.info("save cleaned dataset")
-            with open(Config.TRAIN_DATASET_PATH / f"cleaned-dataset-{granularity}.json", "w") as file:
-                json.dump(cleaned_dataset, file, indent=2)
-            
-            # save cleaned dataset
-            logger.info("save tagged dataset")
-            with open(Config.TRAIN_DATASET_PATH / f"tagged-dataset-{granularity}.json", "w") as file:
-                json.dump(tagged_dataset, file, indent=2)
-
-        elif base_model == "some model":
+        else:
             ...
 
-# commande line execution
-if sys.argv[1] == "plagiarism":
-    model = sys.argv[2]
-    granularity = sys.argv[3]
-    TrainPlagiarismDetection(model, granularity)
-elif sys.argv[1] == "summary":
-    ...
-else:
-    print("error refer to documentation")
+
+class PlagiarismDetectionEmbeddings():
+    def __init__(
+        self,
+        base_model,
+        granularity: Granularity
+    ) -> None:
+
+        if base_model == 'gensim_doc2vec':
+            # load original dataset
+            dataset = dataloader.load_data(granularity=granularity)
+
+            # cleaned dataset
+            dataloader.clean_data(
+                dataset=dataset,
+                spacy_lang_model=Config.SPACY_MODEL,
+                remove_punctuation=True,
+                remove_stopword=True,
+                remove_digit=True,
+                remove_space=True,
+                return_word_list=True
+            )
+
+            # embedinngs
+            model_path = Config.TRAIN_MODELS_PATH / f"citadel-{granularity}-{base_model}.model"
+            model = Doc2Vec.load(str(model_path))
+            for data in dataset:
+                data.vector = model.infer_vector(data.cleaned_text)
+
+            # save embeddins
+            self._save_embeddings(base_model, dataset, granularity)
+
+        elif base_model == 'distiluse-base-multilingual-cased-v1':
+            # load original dataset
+            dataset = dataloader.load_data(granularity=granularity)
+
+            # cleaned dataset
+            dataloader.clean_data(
+                dataset=dataset,
+                spacy_lang_model=Config.SPACY_MODEL,
+                remove_punctuation=False,
+                remove_stopword=False,
+                remove_digit=True,
+                remove_space=True,
+                return_word_list=False
+            )
+
+            # embeddings
+            model = distiluse.get_model()
+            for data in dataset:
+                data.vector = model.encode(data.cleaned_text)
+
+            # save embeddins
+            self._save_embeddings(base_model, dataset, granularity)
+
+        elif base_model == 'all-MiniLM-L6-v2':
+            # load original dataset
+            dataset = dataloader.load_data(granularity=granularity)
+
+            # cleaned dataset
+            dataloader.clean_data(
+                dataset=dataset,
+                spacy_lang_model=Config.SPACY_MODEL,
+                remove_punctuation=False,
+                remove_stopword=False,
+                remove_digit=True,
+                remove_space=True,
+                return_word_list=False
+            )
+
+            # embeddings
+            model = all_mini_lm.get_model()
+            for data in dataset:
+                data.vector = model.encode(data.cleaned_text)
+
+            # save embeddins
+            self._save_embeddings(base_model, dataset, granularity)
+
+        elif base_model == 'camembert-large':
+            # load original dataset
+            dataset = dataloader.load_data(granularity=granularity)
+
+            # cleaned dataset
+            dataloader.clean_data(
+                dataset=dataset,
+                spacy_lang_model=Config.SPACY_MODEL,
+                remove_punctuation=False,
+                remove_stopword=False,
+                remove_digit=True,
+                remove_space=True,
+                return_word_list=False
+            )
+
+            # embeddings
+            model = camembert_large.get_model()
+            for data in dataset:
+                data.vector = model.encode(data.cleaned_text)
+
+            # save embeddins
+            self._save_embeddings(base_model, dataset, granularity)
+
+    def _save_embeddings(
+        self,
+        base_model: str,
+        dataset: dict,
+        granularity: str
+    ):
+        logger.info(f"{base_model} - save embeddings")
+        with open(Config.EMBEDDINGS_PATH / f"citadel-{granularity}-{base_model}.dict.pickle", "wb") as file:
+            pickle.dump(
+                dataset,
+                file,
+                protocol=pickle.HIGHEST_PROTOCOL
+            )
+
+
+# Launch
+if __name__ == "__main__":
+    TrainPlagiarismDetectionModels('gensim_doc2vec', Granularity.PARAGRAPH)
+    PlagiarismDetectionEmbeddings('distiluse-base-multilingual-cased-v1', Granularity.PARAGRAPH)
+    PlagiarismDetectionEmbeddings('all-MiniLM-L6-v2', Granularity.PARAGRAPH)
+    PlagiarismDetectionEmbeddings('gensim_doc2vec', Granularity.PARAGRAPH)
