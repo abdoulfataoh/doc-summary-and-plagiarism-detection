@@ -2,7 +2,7 @@
 
 
 import logging
-from typing import List, Union
+from typing import List, Tuple, Union
 from pathlib import Path
 
 import fitz
@@ -58,6 +58,7 @@ class Pdf():
                 blocks = page.get_text('blocks', sort=True)
                 for block in blocks:
                     if block[6] == 0:  # if block contain text
+                        block_coordinates = block[:4]
                         block_number = block[5] + 1
                         block_text = block[4]
                         block_text = unidecode(block_text)
@@ -65,7 +66,8 @@ class Pdf():
                             file_name,
                             page_number,
                             block_number,
-                            block_text
+                            block_text,
+                            block_coordinates 
                         )
                         data.append(paragraph)
 
@@ -78,13 +80,12 @@ class Pdf():
         self,
         doc: fitz,
         page: int,
-        pattern: str,
+        coordinates: Tuple[float, float, float, float],
         content: str = ''
     ) -> bool:
 
         page = doc[page]
-        quads = page.search_for(pattern, quads=True)
-        annot = page.add_highlight_annot(quads)
+        annot = page.add_highlight_annot(coordinates)
         annot.set_info(content=content)
 
         return True
