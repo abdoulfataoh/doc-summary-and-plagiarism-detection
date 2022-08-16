@@ -45,6 +45,7 @@ class Paragraph:
     page_number: str
     paragraph_number: int
     text: str
+    coordinates: tuple = field(default_factory=tuple)
     cleaned_text: Union[List[str], str] = field(default_factory=str)
     vector: list = field(default_factory=list)
     id: int = field(default_factory=int)
