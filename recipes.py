@@ -4,7 +4,8 @@ import json
 from pathlib import Path
 
 from utils.data_loader import DataLoader
-from config import Config
+from utils import Config
+
 
 def make_clean_datasets(dataset_path: str, save_folder_path: str, granularities: list):
     for granulaty in granularities:
@@ -27,11 +28,11 @@ make_clean_datasets(Config.DATASET_PATH, Config.TRAIN_DATASET_PATH, ["document"]
 
 
 def make_tag_doc(dataset_json_path: str, save_file_path):
-        with open(dataset_json_path, 'r') as file:
-            dataset = json.load(file)
-            tagged_dataset = DataLoader.word2vec_tag_doc(dataset)
-            with open(save_file_path, "w") as file:
-                json.dump(tagged_dataset, file, indent=2)
+    with open(dataset_json_path, 'r') as file:
+        dataset = json.load(file)
+        tagged_dataset = DataLoader.word2vec_tag_doc(dataset)
+        with open(save_file_path, "w") as file:
+            json.dump(tagged_dataset, file, indent=2)
 
 # make_tag_doc(
 #     "dataset/cache/dataset-clean-document.json",
