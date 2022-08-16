@@ -46,9 +46,10 @@ def count_words(dataset: str):
     print(f"MIN: {min_value} ({files_name[count_word_list.index(min_value)]})")
     print(f"MAX: {max_value} ({files_name[count_word_list.index(max_value)]})")
 
-    #save result dic
+    # save result dic
     with open(Config.OTHERS_DATA_PATH / "result_statistic.json", "w") as file:
         json.dump(results_dic, file, indent=2)
+
 
 def plot_figure():
     file = open("result_statistic.json", "r")
@@ -59,21 +60,21 @@ def plot_figure():
     del data["max_value"]
     del data["min_value"]
 
-    values = []  
-    l = [i for i in range(len(data))]
+    values = []
+    indexs = [i for i in range(len(data))]
     values = list(data.values())
 
-    plt.figure(figsize=(14,10))
-    plt.bar(l, values)
+    plt.figure(figsize=(14, 10))
+    plt.bar(indexs, values)
     plt.plot([0, 100], [14931.787234042553, 14931.787234042553], c="orange", label="moyenne")
-    plt.title("Nombre de mots par documents", fontdict={'fontsize':18})
-    plt.xlabel("Identidiants documents", fontdict={'fontsize':16})
-    plt.ylabel("Nombre de mots", fontdict={'fontsize':16})
+    plt.title("Nombre de mots par documents", fontdict={'fontsize': 18})
+    plt.xlabel("Identidiants documents", fontdict={'fontsize': 16})
+    plt.ylabel("Nombre de mots", fontdict={'fontsize': 16})
     plt.legend()
     plt.savefig("dataset.png")
 
 
-    # launch
+# launch
 if __name__ == '__main__':
     dataloader = DataLoader(Config.DATASET_PATH)
     dataset = dataloader.load_original_data("word")
