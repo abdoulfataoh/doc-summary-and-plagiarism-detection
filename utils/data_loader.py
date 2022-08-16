@@ -73,7 +73,10 @@ class DataLoader:
                 remove_space=remove_space,
                 return_word_list=return_word_list
             )
-            data.cleaned_text = clean_text
+            if clean_text != [] and clean_text != '':
+                data.cleaned_text = clean_text
+            else:
+                dataset.remove(data)
 
     def _listing_pdf_files(self, files_path: Union[str, Path]) -> List[str]:
         files_path = Path(files_path)
