@@ -22,15 +22,14 @@ def make_tmp_file(uploader_file):
     return r".streamlit/tmp.pdf"
 
 st.set_page_config(
-    page_title="plagiarism",
-    page_icon="🌐"
+    page_title='plagiarism',
+    page_icon='🌐'
 )
 
 # sidebar
-st.sidebar.header("Settings")
-model = st.sidebar.selectbox("Choose model", _get_models_name())
-sensibility = st.sidebar.slider("sensibility", 0, 100, 50)
-display_metric = st.sidebar.checkbox("Display metrics ?")
+st.sidebar.header('Settings')
+model = st.sidebar.selectbox('Choose model', _get_models_name())
+sensibility = st.sidebar.slider('sensibility', 0, 100, 50)
 
 # main
 st.markdown(
@@ -41,9 +40,9 @@ st.markdown(
 )
 st.write("##")
 
-uploader_file = st.file_uploader("Choose a pdf document", type="pdf")
-st.write("#")
-validate_btn = st.button("check plagiarism")
+uploader_file = st.file_uploader('Choose a pdf document', type='pdf')
+st.write('#')
+validate_btn = st.button('check plagiarism')
 
 
 # traitement 
@@ -60,9 +59,9 @@ if validate_btn:
         progress_bar.progress(int(progress))
 
     new_file = '.streamlit/tmp-plagiarism.pdf'
-    with open(new_file, "rb") as file:
+    with open(new_file, 'rb') as file:
         btn = st.download_button(
-            label="download the report",
+            label='download the report',
             data=file,
             file_name=new_file,
         )

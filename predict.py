@@ -15,10 +15,11 @@ from utils import text_cleaner
 from utils import Config
 from utils import DataLoader
 from utils import Granularity
-from models.plagiarism import doc2vec
+# from models.plagiarism import doc2vec # Doc2vec
 from models.plagiarism import distiluse
 from models.plagiarism import camembert_large
 from models.plagiarism import all_mini_lm
+from models.summarization import bart_large_cnn, camembert2camembert_shared
 
 
 logging.basicConfig(level=logging.INFO)
@@ -173,7 +174,7 @@ class PredictionPlagiarismDetection(object):
             )
 
             # load model
-            model = distiluse.get_model()
+            model = all_mini_lm.get_model()
 
             # load db embedings
             db_embedings = self._load_embedings(
@@ -226,7 +227,7 @@ class PredictionPlagiarismDetection(object):
             )
 
             # load model
-            model = distiluse.get_model()
+            model = camembert_large.get_model()
 
             # load db embedings
             db_embedings = self._load_embedings(
@@ -271,12 +272,60 @@ class PredictionPlagiarismDetection(object):
         return embedings
 
 
+class PredictionSummary:
+    _base_model: DataLoader
+    _text: str
+    
+    def __init__(
+        self,
+        base_model: str,
+        text: str
+    ) -> None:
+        self._base_model = base_model
+        self._text = text
+        
+    def predict(self, **kwargs) -> None:
+        if self._base_model == 'bart-large-cnn':
+            model = bart_large_cnn.get_model()
+            result = model(self._text, kwargs)
+        
+        elif self._base_model == 'camembert2camembert_shared':
+            model, tokenizer, device = camembert2camembert_shared.get_model()
+            inputs = tokenizer(
+                [self._text],
+                padding="max_length",
+                truncation=True, max_length=512,
+                return_tensors="pt"
+            )
+            input_ids = inputs.input_ids.to(device)
+            attention_mask = inputs.attention_mask.to(device)
+            output = model.generate(input_ids, attention_mask=attention_mask)
+            result = tokenizer.decode(output[0], skip_special_tokens=True)
+        
+        return result
+
+
 # Test
 if __name__ == "__main__":
-    p = PredictionPlagiarismDetection(
-        'gensim_doc2vec',
-        'test.pdf',
-        Granularity.PARAGRAPH
+    # p = PredictionPlagiarismDetection(
+    #     'gensim_doc2vec',
+    #     'test.pdf',
+    #     Granularity.PARAGRAPH
+    # )
+    # for progress in p.predict(0.5):
+    #     print(progress)
+
+    text = """
+    La Terre est la troisième planète par ordre d'éloignement au Soleil et la cinquième plus grande aussi bien par la masse que le diamètre du Système solaire.
+    L'axe de rotation de la Terre possède une inclinaison de 23°, ce qui cause l'apparition des saisons.
+    Une combinaison de facteurs tels que la distance de la Terre au Soleil (environ 150 millions de kilomètres, aussi appelée unité astronomique), son atmosphère, sa couche d'ozone, son champ magnétique et son évolution géologique ont permis à la vie d'évoluer et de se développer.
+    Elle est la planète la plus dense du Système solaire ainsi que la plus grande et massive des quatre planètes telluriques.
+    La structure interne de la Terre est géologiquement active, le noyau interne solide et le noyau externe liquide (composés tous deux essentiellement de fer) permettant notamment de générer le champ magnétique terrestre par effet dynamo et la convection du manteau terrestre (composé de roches silicatées) étant la cause de la tectonique des plaques
+    """
+    s = PredictionSummary(
+        'camembert2camembert_shared',
+        text
     )
-    for progress in p.predict(0.5):
-        print(progress)
+
+    print(s.predict())
+
