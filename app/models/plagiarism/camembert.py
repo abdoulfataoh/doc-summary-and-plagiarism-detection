@@ -1,10 +1,11 @@
 # coding: utf-8
 
-
 from sentence_transformers import SentenceTransformer
 
+from models.interface import PlagiarismModelInterface
 
-class CamembertLarge():
+
+class CamembertLarge(PlagiarismModelInterface):
     def __init__(self) -> None:
         pass
 

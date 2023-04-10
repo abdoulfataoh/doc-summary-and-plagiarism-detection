@@ -3,8 +3,10 @@
 
 from sentence_transformers import SentenceTransformer
 
+from models.interface import PlagiarismModelInterface
 
-class DistiluseBaseMultilingualV1():
+
+class DistiluseBaseMultilingualV1(PlagiarismModelInterface):
     def __init__(self) -> None:
         pass
 

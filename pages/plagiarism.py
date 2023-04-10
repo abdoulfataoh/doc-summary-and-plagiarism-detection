@@ -12,7 +12,6 @@ def _get_models_name() -> list:
         'distiluse-base-multilingual-cased-v1',
         'all-MiniLM-L6-v2',
         'camembert_large'
-
     ]
     return models
 
