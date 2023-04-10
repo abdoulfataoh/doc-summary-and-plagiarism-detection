@@ -1,13 +1,12 @@
 # coding: utf-8
 
-
 import logging
-from typing import List, Tuple, Union
+from typing import List, Tuple
 from pathlib import Path
 
 import fitz
 
-from app.settings import Granularity
+from app.settings import Granularity as G
 from app.templates import Document, Page, Paragraph
 
 
@@ -28,14 +27,14 @@ class Pdf():
     def extract_text(
         self,
         pdfpath: Path,
-        granularity: Granularity
-    ) -> List[Union[Document, Page, Paragraph]]:
+        granularity: G
+    ) -> List[dict]:
 
         filename = Path(pdfpath).name
         doc = fitz.open(pdfpath)
         data = []
 
-        if granularity == Granularity.DOCUMENT:
+        if granularity == G.DOCUMENT:
             document_text = ''
             for page in doc:
                 document_text = document_text + '\n' + page.get_text()
@@ -45,7 +44,7 @@ class Pdf():
             )
             data.append(document)
 
-        elif granularity == Granularity.PAGE:
+        elif granularity == G.PAGE:
             for page in doc:
                 page_number = page.number + 1
                 page_text = page.get_text()
@@ -56,7 +55,7 @@ class Pdf():
                 )
                 data.append(page)
 
-        elif granularity == Granularity.PARAGRAPH:
+        elif granularity == G.PARAGRAPH:
             for page in doc:
                 page_number = page.number + 1
                 blocks = page.get_text('blocks', sort=True)
@@ -68,7 +67,7 @@ class Pdf():
                         paragraph = Paragraph.to_dict(
                             filename=filename,
                             page_number=page_number,
-                            block_number=block_number,
+                            paragraph_number=block_number,
                             text=block_text,
                             coordinates=block_coordinates
                         )
