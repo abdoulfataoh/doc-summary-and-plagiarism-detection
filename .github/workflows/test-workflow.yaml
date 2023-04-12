@@ -10,11 +10,11 @@ on:
       - "main"
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - name: Build docker Image
+      - name: test workflow
         run: |
           sudo apt-get update
           sudo curl -sSL https://install.python-poetry.org | python3 -
