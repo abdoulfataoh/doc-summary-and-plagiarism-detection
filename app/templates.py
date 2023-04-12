@@ -16,7 +16,7 @@ __all__ = [
 class Document:
     filename: str
     text: str
-    cleaned_text: Union[List[str], str] = field(default_factory=str)
+    clean_text: Union[List[str], str] = field(default_factory=str)
     vector: list = field(default_factory=list)
     id: int = field(default_factory=int)
 
@@ -34,7 +34,7 @@ class Page:
     filename: str
     page_number: int
     text: str
-    cleaned_text: Union[List[str], str] = field(default_factory=str)
+    clean_text: Union[List[str], str] = field(default_factory=str)
     vector: list = field(default_factory=list)
     id: int = field(default_factory=int)
 
@@ -54,7 +54,7 @@ class Paragraph:
     paragraph_number: int
     text: str
     coordinates: tuple = field(default_factory=tuple)
-    cleaned_text: Union[List[str], str] = field(default_factory=str)
+    clean_text: Union[List[str], str] = field(default_factory=str)
     vector: list = field(default_factory=list)
     id: int = field(default_factory=int)
 
