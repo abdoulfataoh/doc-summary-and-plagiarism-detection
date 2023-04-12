@@ -24,6 +24,7 @@ sacrebleu = "^2.1.0"
 streamlit = "^1.11.0"
 environs = "^9.5.0"
 nltk = "^3.8.1"
+rich = "^13.3.3"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.13.9"
