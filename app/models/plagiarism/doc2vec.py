@@ -12,9 +12,9 @@ class Doc2vec(PlagiarismModelInterface):
     _model: Doc2Vec
 
     def __init__(self, **kwargs) -> None:
-        self._model = Doc2Vec(**kwargs)
-        if kwargs.get('existing_model') is not None:
-            self._model = Doc2Vec.load(kwargs.get('existing_model'))
+        self._model = Doc2Vec()
+        if kwargs.get('load_from') is not None:
+            self._model = Doc2Vec.load(kwargs.get('load_from'))
 
     def train(self, **kwargs):
         docs = kwargs['documents']
@@ -23,12 +23,6 @@ class Doc2vec(PlagiarismModelInterface):
         min_count = kwargs['min_count']
         workers = kwargs['workers']
         tagged_docs = [TaggedDocument(doc, [i]) for i, doc in enumerate(docs)]
-
-        # from gensim.test.utils import common_texts
-        # from gensim.models.doc2vec import Doc2Vec, TaggedDocument
-
-        # documents = [TaggedDocument(doc, [i]) for i, doc in enumerate(common_texts)]
-        # model = Doc2Vec(documents, vector_size=5, window=2, min_count=1, workers=4)
 
         self._model = Doc2Vec(
             documents=tagged_docs,
@@ -39,7 +33,10 @@ class Doc2vec(PlagiarismModelInterface):
         )
 
     def encode(self, input: Any, **kwargs) -> Any:
+        if type(input) == str:
+            input = input.split()
         return self._model.infer_vector(input, **kwargs)
+        
 
     def __str__(self) -> str:
         return 'Doc2vec'
