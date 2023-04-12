@@ -4,10 +4,11 @@ import logging
 from pathlib import Path
 from typing import List, Callable, Any
 
+from rich.progress import track
+
 from app.dataloader.pdf import Pdf
 from app.settings import Granularity as G
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -46,7 +47,10 @@ class DataLoader:
     ) -> List[dict]:
 
         dataset = []
-        for pdf_path in self._files:
+        for pdf_path in track(
+            self._files,
+            description="pdf text extractor"
+        ):
             logger.info(f"load {pdf_path} data ...")
             data = self._pdf.extract_text(pdf_path, granularity)
             for d in data:

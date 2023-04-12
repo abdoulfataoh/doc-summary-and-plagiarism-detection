@@ -2,7 +2,7 @@
 
 from sentence_transformers import SentenceTransformer
 
-from models.interface import PlagiarismModelInterface
+from .base import PlagiarismModelInterface
 
 
 class AllMiniLML6V2(PlagiarismModelInterface):
