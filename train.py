@@ -38,4 +38,4 @@ def train_doc2vec(dataloader):
 
 
 if __name__ == '__main__':
-    train_word2vec(dataloader)
+    train_doc2vec(dataloader)
