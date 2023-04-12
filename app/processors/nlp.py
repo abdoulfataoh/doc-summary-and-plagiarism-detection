@@ -69,5 +69,4 @@ def clean_with_re(
                 continue
 
         tokens.append(token.strip().lower())
-    print(tokens)
     return ' '.join(tokens)
