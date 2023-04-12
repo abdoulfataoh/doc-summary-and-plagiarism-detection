@@ -29,6 +29,7 @@ SPACY_MODEL_NAME = env('SPACY_MODEL', 'fr_core_news_sm')
 # [ NLTK settings]
 NLTK_LANGUAGE = env('NLTK_LANGUAGE', 'french')
 
+
 # [ Granulary ]
 class Granularity(Enum):
     WORD = 'WORD'
