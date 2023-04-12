@@ -7,7 +7,7 @@ run-name: test-workflow trigged ${{github.actor}}
 on:
   push:
     branches:
-      - "master"
+      - "main"
 
 jobs:
   build:
