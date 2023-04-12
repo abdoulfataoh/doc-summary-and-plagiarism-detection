@@ -7,11 +7,20 @@ __all__ = [
     'PlagiarismModelInterface',
 ]
 
+
 class PlagiarismModelInterface(ABC):
     """
     Tremplate for Plagiarism detection models
     """
 
     @abstractmethod
-    def get_model(self):
+    def __init__(self):
+        ...
+
+    @abstractmethod
+    def train(self, **kwargs):
+        ...
+
+    @abstractmethod
+    def encode(self, input, **kwargs):
         ...
