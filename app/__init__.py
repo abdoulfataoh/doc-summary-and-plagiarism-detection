@@ -18,11 +18,20 @@ __all__ = [
 
 pdf = Pdf()
 cleaner = clean_with_re
-dataloader = DataLoader(
-    filespath=settings.TEST_DATASET_FOLDER,
-    pdf=pdf,
-    cleaner=cleaner,
-)
+
+if settings.TEST == True:
+    dataloader = DataLoader(
+        filespath=settings.TEST_DATASET_FOLDER,
+        pdf=pdf,
+        cleaner=cleaner,
+    )
+else:
+    dataloader = DataLoader(
+        filespath=settings.TEST_DATASET_FOLDER,
+        pdf=pdf,
+        cleaner=cleaner,
+    )
+
 
 
 

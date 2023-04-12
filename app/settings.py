@@ -1,12 +1,17 @@
 # coding: utf-8
 
+import logging
 from pathlib import Path
 from enum import Enum
 
 from environs import Env
 
+logging.basicConfig(level=logging.WARNING)
 
 env = Env()
+env.read_env()
+
+TEST = env.bool('TEST', False)
 
 # [ Path settings ]
 ASSETS_FOLDER = env('ASSETS_FOLDER', r'assets')
