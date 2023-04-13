@@ -35,6 +35,10 @@ def predict_plagiarism(
         dataloader=doc_dataloader
     )
 
+    progress = 0
+    progress_100 = len(document)
+    progress_step = progress_100 // 100
+
     for section in document:
         similarities: list = []
         for data in database:
@@ -50,7 +54,12 @@ def predict_plagiarism(
                 del data_copy['embeding']
                 similarities.append(data_copy)
         del section['embeding']
+
+        progress = progress + progress_step
+        progress = progress if progress <= 100 else 100
+        
         yield {
+            'progress': progress,
             'section': section,
             'similarities': similarities,
         }
