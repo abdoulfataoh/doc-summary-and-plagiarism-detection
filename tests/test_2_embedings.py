@@ -9,9 +9,11 @@ from app.models.plagiarism import DistiluseBaseMultilingualV1
 from app.models.plagiarism import Doc2vec
 from app.models.plagiarism import CamembertLarge
 
+
 @pytest.fixture
 def dt():
     return dataloader
+
 
 def test_create_embedings(dt):
     models = [
