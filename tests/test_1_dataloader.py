@@ -1,6 +1,5 @@
 # coding: utf-8
 
-from app import settings
 from app.settings import Granularity as G
 from app import dataloader
 
