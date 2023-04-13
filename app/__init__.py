@@ -1,7 +1,6 @@
 # coding: utf-8
 
 from app import settings
-from app.settings import Granularity as G
 from app.dataloader import Pdf
 from app.dataloader import DataLoader
 # from app.processors import clean_with_spacy
@@ -16,6 +15,7 @@ settings.TEST_DATASET_FOLDER.mkdir(parents=True, exist_ok=True)
 settings.MODELS_FOLDER.mkdir(parents=True, exist_ok=True)
 settings.EMBEDDINGS_FOLDER.mkdir(parents=True, exist_ok=True)
 settings.METRICS_FOLDER.mkdir(parents=True, exist_ok=True)
+settings.WORKDIR.mkdir(parents=True, exist_ok=True)
 
 __all__ = [
     'dataLoader',
@@ -26,7 +26,7 @@ __all__ = [
 pdf = Pdf()
 cleaner = clean_with_re
 
-if settings.TEST == True:
+if settings.TEST is True:
     dataloader = DataLoader(
         filespath=settings.TEST_DATASET_FOLDER,
         pdf=pdf,
