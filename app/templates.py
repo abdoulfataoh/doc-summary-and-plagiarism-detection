@@ -17,7 +17,7 @@ class Document:
     filename: str
     text: str
     clean_text: Union[List[str], str] = field(default_factory=str)
-    vector: list = field(default_factory=list)
+    embeding: list = field(default_factory=list)
     id: int = field(default_factory=int)
 
     def __post_init__(self):
@@ -35,7 +35,7 @@ class Page:
     page_number: int
     text: str
     clean_text: Union[List[str], str] = field(default_factory=str)
-    vector: list = field(default_factory=list)
+    embeding: list = field(default_factory=list)
     id: int = field(default_factory=int)
 
     def __post_init__(self):
@@ -55,7 +55,7 @@ class Paragraph:
     text: str
     coordinates: tuple = field(default_factory=tuple)
     clean_text: Union[List[str], str] = field(default_factory=str)
-    vector: list = field(default_factory=list)
+    embeding: list = field(default_factory=list)
     id: int = field(default_factory=int)
 
     def __post_init__(self):
