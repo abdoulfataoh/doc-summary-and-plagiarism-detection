@@ -1,66 +1,66 @@
 # coding: utf-8
 
+from uuid import uuid4 as uuid
+
 import streamlit as st
-import base64
+from PIL import Image
 
-from utils import Granularity
-from predict import PredictionPlagiarismDetection
+from app import settings
+from app.settings import Granularity as G
+from app.models.plagiarism import AllMiniLML6V2
+from app.models.plagiarism import DistiluseBaseMultilingualV1
+from app.models.plagiarism import Doc2vec
+from app.models.plagiarism import CamembertLarge
 
-def _get_models_name() -> list:
-    models = [
-        'gensim_doc2vec',
-        'distiluse-base-multilingual-cased-v1',
-        'all-MiniLM-L6-v2',
-        'camembert_large'
-    ]
-    return models
+operation_id = id = uuid().hex[:8]
 
-def make_tmp_file(uploader_file):
-    with open(r".streamlit/tmp.pdf", "wb") as file:
-        file.write(uploader_file.read())
-    return r".streamlit/tmp.pdf"
+models = {
+    'AllMiniLML6V2': AllMiniLML6V2,
+    'DistiluseBaseMultilingualV1': DistiluseBaseMultilingualV1,
+    'Doc2vec': Doc2vec,
+    'CamembertLarge': CamembertLarge,
+}
+    
 
 st.set_page_config(
-    page_title='plagiarism',
-    page_icon='🌐'
+    page_title="Home",
+    page_icon="🏠",
 )
 
-# sidebar
-st.sidebar.header('Settings')
-model = st.sidebar.selectbox('Choose model', _get_models_name())
-sensibility = st.sidebar.slider('sensibility', 0, 100, 50)
 
-# main
+st.image(Image.open(r'docs/citadel.png'))
+
+
 st.markdown(
-    """
-        # Plagiarism detection
-        plagiarism detection in documents based on deep learning models
-    """
+    'DÉTECTION DE PLAGIATS DANS LES ÉTUDES DE L’ADMINISTRATION'
 )
-st.write("##")
+   
+model = st.sidebar.selectbox(
+    'Choose model',
+    list(models.keys())
+)
 
-uploader_file = st.file_uploader('Choose a pdf document', type='pdf')
-st.write('#')
-validate_btn = st.button('check plagiarism')
+threshold = st.sidebar.slider('Choose threshold', 0, 100, 70)
 
+uploaded_file = st.file_uploader("Upload your document", type=['pdf'])
+file = None
+if uploaded_file is not None:
+    bytes_data = uploaded_file.getvalue()
+    name = uploaded_file.name
+    file = settings.WORKDIR / f'{operation_id}-{name}'
+    with open(file, 'wb') as f:
+        f.write(bytes_data)
+        tab1, tab2 = st.tabs(['progress bar', 'details'])
 
-# traitement 
-if validate_btn:
-    # traitement
-    p = PredictionPlagiarismDetection(
-        model,
-        make_tmp_file(uploader_file),
-        Granularity.PARAGRAPH
-    )
-    progress_bar = st.progress(0)
-
-    for progress in p.predict(sensibility/100):
-        progress_bar.progress(int(progress))
-
-    new_file = '.streamlit/tmp-plagiarism.pdf'
-    with open(new_file, 'rb') as file:
-        btn = st.download_button(
-            label='download the report',
-            data=file,
-            file_name=new_file,
+        progress_text = 'Operation in progress. Please wait....'
+        tab1.subheader(progress_text)
+        progress_bar = tab1.progress(0)
+        progress_bar.progress(50)
+        tab1.download_button(
+            label="Download the repport",
+            data='csv',
+            file_name='large_df.csv',
+            mime='application/pdf',
         )
+
+        tab2.subheader('Details')
