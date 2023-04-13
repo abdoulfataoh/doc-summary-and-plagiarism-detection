@@ -10,13 +10,12 @@ st.set_page_config(
 )
 
 
-st.image(Image.open(r'pages/logo_citadel.png'))
+st.image(Image.open(r'docs/citadel.png'))
 
 
 st.markdown(
-    """
-    
-    ### Deep learning models for plagiarism and text summarization
-   
-    """
+    'APPRENTISSAGE PROFOND POUR LE RÉSUMÉ DE DOCUMENTS ET '
+    'LA DÉTECTION DE PLAGIATS DANS LES ÉTUDES DE L’ADMINISTRATION'
 )
+   
+
