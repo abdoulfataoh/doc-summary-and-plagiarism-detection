@@ -22,6 +22,7 @@ TEST_DATASET_FOLDER = env('TEST_DATASET_FOLDER', Path(DATASET_FOLDER, 'test'))
 MODELS_FOLDER = env('MODELS_FOLDER', Path(ASSETS_FOLDER, 'models'))
 EMBEDDINGS_FOLDER = env('EMBEDDINGS_FOLDER', Path(ASSETS_FOLDER, 'embeddings'))
 METRICS_FOLDER = env('METRICS_FOLDER', Path('metrics'))
+WORKDIR = env('WORKDIR', Path('workdir'))
 
 # [ Spacy settings ]
 SPACY_MODEL_NAME = env('SPACY_MODEL', 'fr_core_news_sm')
