@@ -17,7 +17,7 @@ class DataLoader:
     _filespath: Path
     _pdf: Pdf
     _cleaner: Any
-    _files: List[Path]
+    _files: List[Path] = []
 
     def __init__(
         self,
