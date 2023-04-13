@@ -6,6 +6,7 @@ assets/models/*
 assets/cache/*
 assets/dataset/train/*
 .streamlit/*.pdf
+workdir
 .env
 
 
