@@ -10,7 +10,9 @@ from nltk.corpus import stopwords
 from app import settings
 
 
-spacy_model = spacy.load(settings.SPACY_MODEL_NAME)
+def _get_spacy_model():
+    spacy_model = spacy.load(settings.SPACY_MODEL_NAME)
+    return spacy_model
 
 
 def clean_with_spacy(
@@ -21,7 +23,7 @@ def clean_with_spacy(
     del_space: bool,
 ) -> str:
 
-    nlp: Language = spacy_model
+    nlp: Language = _get_spacy_model()
     doc = nlp(text)
     tokens = []
 
