@@ -22,6 +22,6 @@ class DistiluseBaseMultilingualV1(PlagiarismModelInterface):
 
     def encode(self, input: Any, **kwargs) -> Any:
         return self._model.encode(input, **kwargs)
-    
+
     def __str__(self) -> str:
         return 'DistiluseBaseMultilingualV1'

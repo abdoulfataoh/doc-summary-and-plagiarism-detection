@@ -22,6 +22,6 @@ class AllMiniLML6V2(PlagiarismModelInterface):
 
     def encode(self, input: Any, **kwargs) -> Any:
         return self._model.encode(input, **kwargs)
-    
+
     def __str__(self) -> str:
         return 'AllMiniLML6V2'

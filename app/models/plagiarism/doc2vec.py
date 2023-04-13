@@ -36,7 +36,6 @@ class Doc2vec(PlagiarismModelInterface):
         if type(input) == str:
             input = input.split()
         return self._model.infer_vector(input, **kwargs)
-        
 
     def __str__(self) -> str:
         return 'Doc2vec'
