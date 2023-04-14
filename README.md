@@ -21,6 +21,13 @@ In this project, we employ deep learning models for the purpose of plagiarism de
   poetry shell
 ```
 
+- Install Spacy and NLTK language models
+``bash
+  python -m spacy download en_core_web_sm
+  python -m spacy download fr_core_news_sm
+  python -m nltk.downloader punkt
+``
+
 - (optional) Use test configuration and file
 ```bash
   echo -n 'TEST=True' > .env
@@ -30,4 +37,5 @@ In this project, we employ deep learning models for the purpose of plagiarism de
 
 ### Workflows
 
-1. Plagiarism detection
+- Plagiarism detection
+![embeddings](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/embeddings.png)
