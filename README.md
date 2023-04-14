@@ -37,5 +37,7 @@ In this project, we employ deep learning models for the purpose of plagiarism de
 
 ### Workflows
 
-#### - Plagiarism detection
+#### Plagiarism detection
+
+- Train
 ![embeddings](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/embeddings.png)
