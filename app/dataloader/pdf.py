@@ -79,12 +79,13 @@ class Pdf():
 
     def highlight_annot(
         self,
-        doc: fitz,
+        pdfpath: Path,
         page_number: int,
         coordinates: Tuple[float, float, float, float],
         content: str = ''
     ) -> None:
 
+        doc = fitz.open(pdfpath)
         page = doc[page_number]
         annot = page.add_highlight_annot(coordinates)
         annot.set_info(content=content)
