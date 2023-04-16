@@ -23,7 +23,7 @@ def create_embedings(
         dataloader,
         save: bool = False
 ) -> dict:
-    
+
     model = model
 
     dataset = dataloader.load_data(
@@ -38,7 +38,7 @@ def create_embedings(
         data['embeding'] = model.encode(data['clean_text'])
 
     if save:
-        embedings_path = settings.EMBEDDINGS_FOLDER / f'emdedings-{model}.pickle'
+        embedings_path = settings.EMBEDDINGS_FOLDER / f'emdedings-{model}.pickle'  # noqa: E501
         with open(embedings_path, 'wb') as file:
             pickle.dump(dataset, file)
 
