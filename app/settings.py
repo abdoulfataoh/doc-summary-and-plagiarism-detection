@@ -13,7 +13,7 @@ env.read_env()
 
 TEST = env.bool('TEST', False)
 
-# [ Path settings ]
+# [ PATH SETTINGS ]
 ASSETS_FOLDER = env('ASSETS_FOLDER', Path('assets'))
 CACHE_FOLDER = env('CACHE_FOLDER', Path(ASSETS_FOLDER, 'cache'))
 DATASET_FOLDER = env('DATASET_FOLDER', Path(ASSETS_FOLDER, 'dataset'))
@@ -24,11 +24,14 @@ EMBEDDINGS_FOLDER = env('EMBEDDINGS_FOLDER', Path(ASSETS_FOLDER, 'embeddings'))
 METRICS_FOLDER = env('METRICS_FOLDER', Path('metrics'))
 WORKDIR = env('WORKDIR', Path('static'))
 
-# [ Spacy settings ]
+# [ SPACY SETTINGS ]
 SPACY_MODEL_NAME = env('SPACY_MODEL', 'fr_core_news_sm')
 
-# [ NLTK settings]
+# [ NLTK SETTINGS ]
 NLTK_LANGUAGE = env('NLTK_LANGUAGE', 'french')
+
+# [ OPENAI ]
+OPENAI_API_TOKEN = env('OPENAI_API_TOKEN', '')
 
 
 # [ Granulary ]
