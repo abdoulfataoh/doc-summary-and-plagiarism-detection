@@ -1,7 +1,7 @@
 # coding: utf-8
 
 import logging
-from typing import List, Tuple
+from typing import List, Tuple, Union
 from pathlib import Path
 
 import fitz
@@ -79,14 +79,15 @@ class Pdf():
 
     def highlight_annot(
         self,
-        pdfpath: Path,
+        document: Union[Path, fitz.fitz.Document],
         page_number: int,
         coordinates: Tuple[float, float, float, float],
         content: str = ''
     ) -> None:
 
-        doc = fitz.open(pdfpath)
-        page = doc[page_number]
+        if type(document) is not fitz.fitz.Document:
+            document = fitz.open(document)
+        page = document[page_number]
         annot = page.add_highlight_annot(coordinates)
         annot.set_info(content=content)
-        return
+
