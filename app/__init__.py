@@ -34,7 +34,7 @@ if settings.TEST is True:
     )
 else:
     dataloader = DataLoader(
-        filespath=settings.TEST_DATASET_FOLDER,
+        filespath=settings.TRAIN_DATASET_FOLDER,
         pdf=pdf,
         cleaner=cleaner,
     )
