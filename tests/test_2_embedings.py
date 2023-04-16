@@ -23,4 +23,4 @@ def test_create_embedings(dt):
         CamembertLarge(),
     ]
     for model in models:
-        create_embedings(model=model, dataloader=dt)
+        create_embedings(model=model, dataloader=dt, save=True)
