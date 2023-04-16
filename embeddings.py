@@ -18,7 +18,12 @@ from app.models.plagiarism import CamembertLarge
 logger = logging.getLogger(__name__)
 
 
-def create_embedings(model: plagiarism_model, dataloader) -> dict:
+def create_embedings(
+        model: plagiarism_model,
+        dataloader,
+        save: bool = False
+) -> dict:
+    
     model = model
 
     dataset = dataloader.load_data(
@@ -32,9 +37,10 @@ def create_embedings(model: plagiarism_model, dataloader) -> dict:
     for data in track(dataset, description="create embedings"):
         data['embeding'] = model.encode(data['clean_text'])
 
-    embedings_path = settings.EMBEDDINGS_FOLDER / f'emdedings-{model}.pickle'
-    with open(embedings_path, 'wb') as file:
-        pickle.dump(dataset, file)
+    if save:
+        embedings_path = settings.EMBEDDINGS_FOLDER / f'emdedings-{model}.pickle'
+        with open(embedings_path, 'wb') as file:
+            pickle.dump(dataset, file)
 
     return dataset
 
@@ -48,4 +54,4 @@ if __name__ == '__main__':
     ]
 
     for model in models:
-        create_embedings(model=model, dataloader=dataloader)
+        create_embedings(model=model, dataloader=dataloader, save=True)
