@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def train_doc2vec(dataloader):
-    dataset = dataloader.load_data(
+    dataset = dataloader.load_data_from_pdf(
         granularity=G.PARAGRAPH,
         del_punctuation=True,
         del_stopword=False,

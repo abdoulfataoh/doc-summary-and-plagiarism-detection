@@ -24,8 +24,8 @@ class Pdf():
     def __init__(self) -> None:
         ...
 
+    @staticmethod
     def extract_text(
-        self,
         pdfpath: Path,
         granularity: G
     ) -> List[dict]:
@@ -77,8 +77,8 @@ class Pdf():
 
         return data
 
+    @staticmethod
     def highlight_annot(
-        self,
         document: Union[Path, fitz.fitz.Document],
         page_number: int,
         coordinates: Tuple[float, float, float, float],
@@ -90,4 +90,3 @@ class Pdf():
         page = document[page_number]
         annot = page.add_highlight_annot(coordinates)
         annot.set_info(content=content)
-

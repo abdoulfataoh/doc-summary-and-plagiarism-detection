@@ -5,7 +5,7 @@ from app import dataloader
 
 
 def test_dataloader():
-    dataset = dataloader.load_data(
+    dataset = dataloader.load_data_from_pdf(
         granularity=G.PARAGRAPH,
         del_punctuation=False,
         del_stopword=False,

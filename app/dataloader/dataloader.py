@@ -15,19 +15,16 @@ logger = logging.getLogger(__name__)
 class DataLoader:
 
     _filespath: Path
-    _pdf: Pdf
     _cleaner: Any
     _files: List[Path] = []
 
     def __init__(
         self,
         filespath: Path,
-        pdf: Pdf,
         cleaner: Callable,
     ) -> None:
 
         self._filespath = filespath
-        self._pdf = pdf
         self._cleaner = cleaner
 
         if self._filespath.is_dir():
@@ -37,7 +34,7 @@ class DataLoader:
         else:
             raise FileNotFoundError("Unable to found pdf file at {filespath}")
 
-    def load_data(
+    def load_data_from_pdf(
         self,
         granularity: G,
         del_punctuation: bool,
@@ -52,7 +49,7 @@ class DataLoader:
             description="pdf text extractor"
         ):
             logger.info(f"load {pdf_path} data ...")
-            data = self._pdf.extract_text(pdf_path, granularity)
+            data = Pdf.extract_text(pdf_path, granularity)
             for d in data:
                 d['clean_text'] = self._cleaner(
                     text=d['text'],
@@ -63,6 +60,16 @@ class DataLoader:
                 )
             dataset.extend(data)
         return dataset
+
+    def load_data_from_json(
+        self,
+        del_punctuation: bool,
+        del_stopword: bool,
+        del_digit: bool,
+        del_space: bool,
+        json_parser: Callable,
+    ) -> List[dict]:
+        pass
 
     @property
     def text_cleaner(self) -> Callable:

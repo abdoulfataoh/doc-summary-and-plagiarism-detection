@@ -26,7 +26,7 @@ def create_embedings(
 
     model = model
 
-    dataset = dataloader.load_data(
+    dataset = dataloader.load_data_from_pdf(
         granularity=G.PARAGRAPH,
         del_punctuation=False,
         del_stopword=False,

@@ -19,22 +19,19 @@ settings.WORKDIR.mkdir(parents=True, exist_ok=True)
 
 __all__ = [
     'dataLoader',
-    'pdf',
+    'Pdf',
     'cleaner',
 ]
 
-pdf = Pdf()
 cleaner = clean_with_re
 
 if settings.TEST is True:
     dataloader = DataLoader(
         filespath=settings.TEST_DATASET_FOLDER,
-        pdf=pdf,
         cleaner=cleaner,
     )
 else:
     dataloader = DataLoader(
         filespath=settings.TRAIN_DATASET_FOLDER,
-        pdf=pdf,
         cleaner=cleaner,
     )

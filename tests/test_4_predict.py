@@ -3,7 +3,6 @@
 import pytest
 
 from app import settings
-from app import pdf
 from app import cleaner
 from app.dataloader import DataLoader
 from app.models.plagiarism import AllMiniLML6V2
@@ -17,7 +16,6 @@ from predict import predict_plagiarism
 def dt():
     doc_dataloader = DataLoader(
         filespath=settings.TEST_DATASET_FOLDER,
-        pdf=pdf,
         cleaner=cleaner
     )
     return doc_dataloader
