@@ -1,11 +1,8 @@
 __pycache__
 */__pycache__
-dataset/*
-assets/embeddings/*
-assets/models/*
 assets/cache/*
-assets/dataset/train/*
-.streamlit/*.pdf
+assets/models/*
+assets/dataset/plagiarism/train/*
 static
 .env
 
