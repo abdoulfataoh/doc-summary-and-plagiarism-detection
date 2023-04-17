@@ -49,7 +49,7 @@ model = model_class() if model_name != 'Doc2vec' else model_class(
         load_from=str(settings.MODELS_FOLDER / f'model-{model_name}.pickle')
     )
 
-database = settings.EMBEDDINGS_FOLDER / f'emdedings-{model}.pickle'
+database = settings.CACHE_FOLDER / f'emdedings-{model}.pickle'
 
 threshold = st.sidebar.slider('Choose threshold', 0, 100, 70)
 

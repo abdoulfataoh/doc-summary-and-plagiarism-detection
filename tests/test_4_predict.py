@@ -15,7 +15,7 @@ from predict import predict_plagiarism
 @pytest.fixture
 def dt():
     doc_dataloader = DataLoader(
-        filespath=settings.TEST_DATASET_FOLDER,
+        filespath=settings.PLAGIARISM_TEST_DATASET_FOLDER,
         cleaner=cleaner
     )
     return doc_dataloader
@@ -29,7 +29,7 @@ def test_predict_plagiarism(dt):
         CamembertLarge(),
     ]
     for model in models:
-        database_path = settings.EMBEDDINGS_FOLDER / f'emdedings-{model}.pickle'  # noqa: E501
+        database_path = settings.CACHE_FOLDER / f'emdedings-{model}.pickle'  # noqa: E501
         predictions = predict_plagiarism(
             model=model,
             database_path=database_path,

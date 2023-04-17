@@ -87,7 +87,7 @@ def predict_plagiarism(
 if __name__ == '__main__':
     # model = Doc2vec(load_from='assets/models/model-Doc2vec.pickle')
     model = AllMiniLML6V2()
-    database_path = settings.EMBEDDINGS_FOLDER / f'emdedings-{model}.pickle'
+    database_path = settings.CACHE_FOLDER / f'emdedings-{model}.pickle'
     doc_dataloader = dt(
         filespath=Path('.static/2c770482-doc.pdf'),
         cleaner=cleaner
