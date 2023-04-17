@@ -42,7 +42,7 @@ def predict_plagiarism(
     document_fitz = fitz.open(document_path)
 
     progress_100 = len(document)
-    progress_step = 100 // progress_100
+    progress_step = 100 / progress_100
     progress = progress_step
 
     for section in document:
@@ -75,7 +75,6 @@ def predict_plagiarism(
                 coordinates=coordinates,
                 content=''
             )
-
         yield {
             'progress': progress,
             'section': section,

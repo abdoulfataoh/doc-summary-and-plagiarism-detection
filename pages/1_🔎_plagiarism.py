@@ -98,6 +98,7 @@ if uploaded_file is not None:
 
         for prediction in predictions:
             progress = prediction['progress']
+            progress = int(progress)
             progress_bar.progress(progress)
             for similarity in prediction['similarities']:
                 similarity_rate = similarity['similarity_rate']
