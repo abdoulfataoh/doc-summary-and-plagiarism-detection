@@ -6,8 +6,9 @@ from pathlib import Path
 import pickle
 
 from sklearn.metrics.pairwise import cosine_similarity
+import fitz
 
-from app import pdf
+from app import Pdf
 from app import cleaner
 from app import settings
 from embeddings import create_embedings
@@ -23,6 +24,7 @@ def predict_plagiarism(
         doc_dataloader: dt,
         similarity_function: Callable = cosine_similarity,
         threshold: int = 50,
+        max_output: int = 1000
 ) -> Generator:
 
     database: dict
@@ -35,9 +37,13 @@ def predict_plagiarism(
         dataloader=doc_dataloader
     )
 
-    progress = 0
+    document_path = doc_dataloader._files[0]
+    document_filename = document_path.name
+    document_fitz = fitz.open(document_path)
+
     progress_100 = len(document)
-    progress_step = progress_100 // 100
+    progress_step = 100 // progress_100
+    progress = progress_step
 
     for section in document:
         similarities: list = []
@@ -57,12 +63,25 @@ def predict_plagiarism(
 
         progress = progress + progress_step
         progress = progress if progress <= 100 else 100
-        
+
+        similarities.sort(key=lambda e: e['similarity_rate'])
+
+        if similarities:
+            page_number = section['page_number'] - 1  # -1 to start count at 0
+            coordinates = section['coordinates']
+            Pdf.highlight_annot(
+                document=document_fitz,
+                page_number=page_number,
+                coordinates=coordinates,
+                content=''
+            )
+
         yield {
             'progress': progress,
             'section': section,
-            'similarities': similarities,
+            'similarities': similarities[:max_output],
         }
+    document_fitz.save(settings.WORKDIR / f'checked-{document_filename}')
 
 
 if __name__ == '__main__':
@@ -70,8 +89,7 @@ if __name__ == '__main__':
     model = AllMiniLML6V2()
     database_path = settings.EMBEDDINGS_FOLDER / f'emdedings-{model}.pickle'
     doc_dataloader = dt(
-        filespath=Path('workdir/doc.pdf'),
-        pdf=pdf,
+        filespath=Path('.static/2c770482-doc.pdf'),
         cleaner=cleaner
     )
     predictions = predict_plagiarism(

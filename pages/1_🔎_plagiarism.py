@@ -8,7 +8,6 @@ import streamlit as st
 from PIL import Image
 
 from app import settings
-from app.settings import Granularity as G
 from app.models.plagiarism import AllMiniLML6V2
 from app.models.plagiarism import DistiluseBaseMultilingualV1
 from app.models.plagiarism import Doc2vec
@@ -25,7 +24,7 @@ models = {
     'Doc2vec': Doc2vec,
     'CamembertLarge': CamembertLarge,
 }
-    
+
 
 st.set_page_config(
     page_title='plagiarism',
@@ -40,7 +39,6 @@ st.image(Image.open(r'docs/citadel.png'))
 st.markdown(
     'DÉTECTION DE PLAGIATS DANS LES ÉTUDES DE L’ADMINISTRATION'
 )
-   
 model_name = st.sidebar.selectbox(
     'Choose model',
     list(models.keys())
@@ -89,7 +87,6 @@ if uploaded_file is not None:
         tab2_col1, tab2_col2 = tab2.columns([3, 3])
 
         annoted_document = settings.WORKDIR / f'checked-{operation_id}-{name}'
-        print('start', annoted_document)
 
         predictions = predict_plagiarism(
             model=model,
@@ -107,17 +104,19 @@ if uploaded_file is not None:
                 similarity_text = similarity['text']
                 similarity_filename = similarity['filename']
                 similarity_display = f'{similarity_rate}\n{similarity_text}'
-                expander = tab2_col2.expander(f'{similarity_rate=} {similarity_filename=}')
+                expander = tab2_col2.expander(
+                    f'{similarity_rate=} {similarity_filename=}'
+                )
                 expander.write(similarity_text)
-        print('end', annoted_document)    
-        
+
         sleep_time = 1
         while True:
             try:
                 with open(annoted_document, 'rb') as f:
                     tab2_col1.write(
                         f'<embed src="data:application/pdf;base64, \
-                            {base64.b64encode(f.read()).decode("utf-8")}" width="650" height="600" \
+                            {base64.b64encode(f.read()).decode("utf-8")}" \
+                                width="650" height="600" \
                                 type="application/pdf">',
                         unsafe_allow_html=True,
                     )
@@ -127,7 +126,6 @@ if uploaded_file is not None:
                 if sleep_time < MAX_WAIT_TIME:
                     time.sleep(sleep_time)
 
-           
     # with open(annoted_document, 'rb') as f:
     #     # col2.download_button(
     #     #     label="Download Annoted File",
