@@ -40,7 +40,10 @@ In this project, we employ deep learning models for the purpose of plagiarism de
 #### Plagiarism detection
 
 - Train
-![embeddings](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/train.png)
+![embeddings](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/plagiarism_train.png)
 
 - Create embeddings
-![embeddings](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/embeddings.png)
+![embeddings](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/plagiarism_embeddings.png)
+
+- Predict
+![embeddings](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/plagiarism_predict.png)
