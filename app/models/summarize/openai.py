@@ -15,7 +15,6 @@ class OpenAi(SummarizeModelInterface):
     _frequency_penalty: float
     _presence_penalty: float
 
-
     def __init__(
             self,
             api_key: str,
@@ -31,7 +30,7 @@ class OpenAi(SummarizeModelInterface):
         self._temperature = temperature
         self._frequency_penalty = frequency_penalty
         self._presence_penalty = presence_penalty
-    
+
     def summarization_task(
             self,
             input: str,
