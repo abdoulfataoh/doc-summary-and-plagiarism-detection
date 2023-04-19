@@ -1,5 +1,5 @@
 ### Description
-In this project, we employ deep learning models for the purpose of plagiarism detection and document summarization.
+In this project, we use deep learning models for the purpose of plagiarism detection and document summarization.
 ### Config
 
 - Clone the project
@@ -40,10 +40,26 @@ In this project, we employ deep learning models for the purpose of plagiarism de
 #### Plagiarism detection
 
 - Train
-![embeddings](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/plagiarism_train.png)
+![train](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/plagiarism_train.png)
 
 - Create embeddings
 ![embeddings](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/plagiarism_embeddings.png)
 
 - Predict
-![embeddings](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/plagiarism_predict.png)
+![predict](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/plagiarism_predict.png)
+
+
+#### Summarize
+...
+
+### Usage with streamlit
+
+Run the streamlit server to use the app
+
+```bash
+  make streamlit-server
+```
+
+![streamlit](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/streamlit.png)
+
+
