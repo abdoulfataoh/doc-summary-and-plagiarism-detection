@@ -60,8 +60,7 @@ In this project, we use deep learning models for the purpose of plagiarism detec
 ```
 
 1. Train models
-
-Dataset must be pdf files and stored in ```assets/dataset/plagiarism/train/```
+> Dataset must be pdf files and stored in ```assets/dataset/plagiarism/train/```
 ```bash
   make train
 ```
