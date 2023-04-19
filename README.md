@@ -54,8 +54,23 @@ In this project, we use deep learning models for the purpose of plagiarism detec
 
 ### Usage with streamlit
 
-Run the streamlit server to use the app
+0. (if TEST env is True) Set it to False
+```bash
+  rm .env
+```
 
+1. Train models
+Dataset must be pdf files and stored in ```assets/dataset/plagiarism/train/```
+``bash
+  make train
+```
+
+2. Create embeddings
+```bash
+  make embediddings
+``` 
+
+3. Run the streamlit server to use the app
 ```bash
   make streamlit-server
 ```
