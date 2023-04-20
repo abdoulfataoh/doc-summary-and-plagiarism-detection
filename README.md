@@ -70,7 +70,7 @@ In this project, we use deep learning models for the purpose of plagiarism detec
 
 2. Create embeddings
 ```bash
-  make embediddings
+  make embeddings
 ``` 
 
 3. Run the streamlit server to use the app

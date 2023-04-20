@@ -17,7 +17,7 @@ test:
 train:
 	python train.py
 
-embediddings:
+embeddings:
 	python embeddings.py
 
 streamlit-server:
