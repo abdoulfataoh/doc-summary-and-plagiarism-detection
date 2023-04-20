@@ -44,6 +44,20 @@ In this project, we use deep learning models for the purpose of plagiarism detec
   make test
 ```
 
+### Settings
+The configuration of the system is done through configuration variables. 
+```export``` command can be used to set a variable value. For example:
+```bash
+  export TEST=True  # To enable test mode
+```
+  
+Settings  | Description
+------------- | -------------
+OPENAI_API_KEY  | Your openai api key to interact with chatgpt model
+TEST  | if True test mode is enabled else prod mode
+WORKDIR  | workdir path
+PLAGIARISM_TRAIN_DATASET_FOLDER  | PDFs dataset folder path
+
 ### Workflows
 
 #### Plagiarism detection
