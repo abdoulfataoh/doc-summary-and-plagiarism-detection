@@ -1,3 +1,6 @@
+[![test-workflow](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/actions/workflows/test-workflow.yaml/badge.svg)](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/actions/workflows/test-workflow.yaml)
+
+
 ### Description
 In this project, we use deep learning models for the purpose of plagiarism detection and document summarization.
 ### Config
