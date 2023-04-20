@@ -22,11 +22,11 @@ In this project, we use deep learning models for the purpose of plagiarism detec
 ```
 
 - Install Spacy and NLTK language models
-``bash
+```bash
   python -m spacy download en_core_web_sm
   python -m spacy download fr_core_news_sm
   python -m nltk.downloader punkt
-``
+```
 
 - (optional) Use test configuration and file
 ```bash
