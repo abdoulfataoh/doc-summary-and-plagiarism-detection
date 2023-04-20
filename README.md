@@ -1,4 +1,10 @@
-[![test-workflow](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/actions/workflows/test-workflow.yaml/badge.svg)](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/actions/workflows/test-workflow.yaml)
+<p>
+  <img src="https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/actions/workflows/test-workflow.yaml/badge.svg">
+  <img src="https://img.shields.io/badge/version-1.0.1-brightgreen">
+  <img src="https://img.shields.io/badge/-DEEPLEARNING-blue">
+  <img src="https://img.shields.io/badge/-PLAGIARISM%20DECTECTION-orange">
+  <img src="https://img.shields.io/badge/-DOCUMENT%20SUMMARY-red">
+</p>
 
 
 ### Description
