@@ -45,13 +45,14 @@ In this project, we use deep learning models for the purpose of plagiarism detec
 ```
 
 - Settings variables
-The configuration of the system is done through configuration variables.
 
-```export``` command can be used to set a variable value.
+> The configuration of the system is done through configuration variables.
 
-The complete settings vars cant be found at ```app/settings.py```
+> ```export``` command can be used to set a variable value.
 
-For example:
+> The complete settings vars cant be found at ```app/settings.py```
+
+> For example:
 ```bash
   export OPENAI_API_KEY='API KEY'  # Your openai api key to interact with chatgpt model
   export TEST=True  # To enable test mode
