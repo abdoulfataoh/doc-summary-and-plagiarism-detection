@@ -37,26 +37,28 @@ In this project, we use deep learning models for the purpose of plagiarism detec
   python -m nltk.downloader punkt
 ```
 
-- (optional) Use test configuration and file
+- (Optional) Use test configuration and file
 ```bash
   echo -n 'TEST=True' > .env
   make flake8
   make test
 ```
 
-### Settings
-The configuration of the system is done through configuration variables. 
-```export``` command can be used to set a variable value. For example:
+- Settings variables
+The configuration of the system is done through configuration variables.
+
+```export``` command can be used to set a variable value.
+
+The complete settings vars cant be found at ```app/settings.py```
+
+For example:
 ```bash
+  export OPENAI_API_KEY='API KEY'  # Your openai api key to interact with chatgpt model
   export TEST=True  # To enable test mode
+  export WORKDIR='path/to/wordir'  # default value is 'static'
+  export PLAGIARISM_TRAIN_DATASET_FOLDER='path/to/dataset'  # PDFs dataset folder path
 ```
-  
-Settings  | Description
-------------- | -------------
-OPENAI_API_KEY  | Your openai api key to interact with chatgpt model
-TEST  | if True test mode is enabled else prod mode
-WORKDIR  | workdir path
-PLAGIARISM_TRAIN_DATASET_FOLDER  | PDFs dataset folder path
+
 
 ### Workflows
 
