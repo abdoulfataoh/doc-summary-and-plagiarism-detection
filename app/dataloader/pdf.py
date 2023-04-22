@@ -90,3 +90,41 @@ class Pdf():
         page = document[page_number]
         annot = page.add_highlight_annot(coordinates)
         annot.set_info(content=content)
+
+    @staticmethod
+    def replace_text(
+        document: Union[Path, fitz.fitz.Document],
+        page_number: int,
+        coordinates: Tuple[float, float, float, float],
+        text: str,
+        **kwargs
+    ) -> None: 
+        if type(document) is not fitz.fitz.Document:
+            document = fitz.open(document)
+
+        page = document[page_number]
+        rect = fitz.Rect(coordinates)
+
+        blocks = page.get_text('dict')['blocks']
+        for block in blocks:
+            spans = block['lines'][0]['spans'][0]
+            fontsize = spans['size']
+            fontname = spans['font']
+            color = (1, 1, 1)  # spans['color']
+            if coordinates == block['bbox']:
+                break
+        print(fontsize, fontname, color)
+        page.draw_rect(rect, color=color, fill=color, overlay=True)
+        try:
+            page.insert_textbox(
+                rect,
+                text,
+                fontsize=fontsize,
+                fontname=fontname,
+            )
+        except:
+            page.insert_textbox(
+                rect,
+                text,
+                fontsize=fontsize,
+            )
