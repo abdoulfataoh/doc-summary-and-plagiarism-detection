@@ -44,6 +44,7 @@ class DataLoader:
     ) -> List[dict]:
 
         dataset = []
+        
         for pdf_path in track(
             self._files,
             description="pdf text extractor"
@@ -51,7 +52,7 @@ class DataLoader:
             logger.info(f"load {pdf_path} data ...")
             data = Pdf.extract_text(pdf_path, granularity)
             if self._cleaner is None:
-                return data
+                dataset.extend(data)
             else:
                 for d in data:
                     d['clean_text'] = self._cleaner(
@@ -62,7 +63,7 @@ class DataLoader:
                         del_space=True,
                     )
                 dataset.extend(data)
-                return dataset
+        return dataset
 
     def load_data_from_json(
         self,
