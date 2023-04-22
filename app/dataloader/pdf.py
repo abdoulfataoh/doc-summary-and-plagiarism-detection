@@ -99,7 +99,7 @@ class Pdf():
         text: str,
         **kwargs
     ) -> None:
-        
+
         if type(document) is not fitz.fitz.Document:
             document = fitz.open(document)
 
@@ -113,24 +113,14 @@ class Pdf():
                 fontname = spans['font']
                 color = (1, 1, 1)  # spans['color']
             except Exception:
-                fontname = None
                 fontsize = 12
                 color = (1, 1, 1)
             if coordinates == block['bbox']:
                 break
         page.draw_rect(rect, color=color, fill=color, overlay=True)
-        try:
-            page.insert_textbox(
-                rect,
-                text,
-                fontsize=fontsize,
-                fontname=fontname,
-            )
-        except Exception:
-            page.insert_textbox(
-                rect,
-                text,
-                fontsize=fontsize,
-                
-            )
+        page.insert_textbox(
+            rect,
+            text,
+            fontsize=fontsize,
+        )
         document.saveIncr()
