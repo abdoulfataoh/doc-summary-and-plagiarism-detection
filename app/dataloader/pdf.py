@@ -110,7 +110,6 @@ class Pdf():
             try:
                 spans = block['lines'][0]['spans'][0]
                 fontsize = spans['size']
-                fontname = spans['font']
                 color = (1, 1, 1)  # spans['color']
             except Exception:
                 fontsize = 12
@@ -123,4 +122,3 @@ class Pdf():
             text,
             fontsize=fontsize,
         )
-        document.saveIncr()

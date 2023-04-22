@@ -1,45 +1,75 @@
 # coding: utf-8
 
+import base64
+from uuid import uuid4 as uuid
+
 import streamlit as st
+from PIL import Image
 
-from predict import PredictionSummary
+from app import settings
+from app.models.summarize import BarthezOrange
+from app.models.summarize import OpenAi
+from app.dataloader import DataLoader
+from predict import predict_summary
 
-
-def _get_models_name() -> list:
-    models = [
-        'bart-large-cnn',
-        'camembert2camembert_shared',
-        'flaubert'
-    ]
-    return models
+models = {
+    'BarthezOrange': BarthezOrange,
+    'OpenAi': OpenAi,
+}
 
 
 st.set_page_config(
-    page_title="summarizer",
-    page_icon="⚡"
+    page_title='summary',
+    page_icon='📝',
 )
 
-# sidebar
-st.sidebar.header("Settings")
-model = st.sidebar.selectbox("Choose model", _get_models_name())
+st.image(Image.open(r'docs/citadel.png'))
 
-# main
 st.markdown(
-    """
-        # Text summarizer
-        A text summarizer tool based on deep learning models
-        <br>
-    """
+    'RESUME DE DOCUMENT DE L’ADMINISTRATION'
 )
-st.write("##")
-text = st.text_area("Enter your text here to get a summary", "Entrez du texte ici pour le resumé")
-st.write("#")
-validate_btn = st.button("summarizer")
 
-if validate_btn:
-    s = PredictionSummary(
-        model,
-        text
+model_name = st.sidebar.selectbox(
+    'Choose model',
+    list(models.keys())
+)
+
+model_class = models[model_name]
+model = model_class()
+
+section_min_words = st.sidebar.slider('Choose threshold', 40, 200, 50)
+uploaded_file = st.file_uploader("Upload your document", type=['pdf'])
+
+if uploaded_file is not None:
+    operation_id = id = uuid().hex[:8]
+    bytes_data = uploaded_file.getvalue()
+    name = uploaded_file.name
+    file = settings.WORKDIR / f'{operation_id}-{name}'
+    with open(file, 'wb') as f:
+        f.write(bytes_data)
+
+    dt = DataLoader(
+        filespath=file,
     )
-    result = s.predict()
-    st.info(result)
+  
+    progress_text = 'Operation in progress. Please wait....'
+    st.title(progress_text)
+    progress_bar = st.progress(0)
+    predictions = predict_summary(
+        model=model,
+        doc_dataloader=dt,
+        max_tokens=section_min_words,
+    )
+    for prediction in predictions:
+        progress = prediction['progress']
+        progress = int(progress)
+        progress_bar.progress(progress)
+
+    summarize_document = settings.WORKDIR / f'summary-{operation_id}-{name}'
+    with open(summarize_document, 'rb') as f:
+        st.download_button(
+            label="Download Repport File",
+            data=f,
+            file_name=summarize_document.name,
+            mime='application/pdf',
+        )

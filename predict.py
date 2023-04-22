@@ -3,10 +3,12 @@
 from typing import Callable
 from typing import Generator
 from pathlib import Path
+import shutil
 import pickle
 
 from sklearn.metrics.pairwise import cosine_similarity
 import fitz
+from unidecode import unidecode
 
 from app import Pdf
 from app import cleaner
@@ -16,6 +18,7 @@ from app.dataloader import DataLoader as dt
 from app.models.plagiarism.base import PlagiarismModelInterface as plagiarism_model # noqa:
 from app.models.plagiarism import Doc2vec  # noqa: F401
 from app.models.plagiarism import AllMiniLML6V2  # noqa: F401
+from app.models.summarize.base import SummarizeModelInterface as summary_model
 
 
 def predict_plagiarism(
@@ -67,7 +70,7 @@ def predict_plagiarism(
         similarities.sort(key=lambda e: e['similarity_rate'])
 
         if similarities:
-            page_number = section['page_number'] - 1  # -1 to start count at 0
+            page_number = section['page_number']
             coordinates = section['coordinates']
             Pdf.highlight_annot(
                 document=document_fitz,
@@ -81,6 +84,54 @@ def predict_plagiarism(
             'similarities': similarities[:max_output],
         }
     document_fitz.save(settings.WORKDIR / f'checked-{document_filename}')
+
+
+def predict_summary(
+        model: summary_model,
+        doc_dataloader: dt,
+        max_tokens: int = 64,
+) -> Generator:  
+    document_path = doc_dataloader._files[0]
+    document_filename = document_path.name
+    document_fitz = fitz.open(document_path)
+    to_summarize_section: list = []
+   
+    for data in doc_dataloader.load_data_from_pdf():
+        text = data['text']
+        words_number = len(text.replace('\n', ' ').split())
+        if words_number >= settings.SUMMARY_SECTION_MIN_WORDS:
+            to_summarize_section.append(data)
+        
+    progress_100 = len(to_summarize_section)
+    progress_step = 100 / progress_100
+    progress = 0
+
+    for section in to_summarize_section:
+        progress = progress + progress_step
+        progress = progress if progress <= 100 else 100
+
+        coordinates = section['coordinates']
+        page_number = section['page_number']
+        text = section['text']
+
+        summary_text = model.summarization_task(
+            input=text,
+            max_tokens=max_tokens,
+        )
+
+        Pdf.replace_text(
+            document=document_fitz,
+            page_number=page_number,
+            coordinates=coordinates,
+            text=unidecode(summary_text)
+        )
+        yield(
+            {
+            'progress': progress,
+            }
+        )
+
+    document_fitz.save(settings.WORKDIR / f'summary-{document_filename}')
 
 
 if __name__ == '__main__':
