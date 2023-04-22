@@ -2,7 +2,7 @@
 
 import logging
 from pathlib import Path
-from typing import List, Callable, Any
+from typing import List, Callable, Any, Union
 
 from rich.progress import track
 
@@ -16,14 +16,14 @@ class DataLoader:
 
     _filespath: Path
     _cleaner: Any
-    _files: List[Path] = []
+    _files: List[Path]
 
     def __init__(
         self,
         filespath: Path,
-        cleaner: Callable,
+        cleaner: Union[Callable, None] = None,
     ) -> None:
-
+        self._files = []
         self._filespath = filespath
         self._cleaner = cleaner
 
@@ -36,11 +36,11 @@ class DataLoader:
 
     def load_data_from_pdf(
         self,
-        granularity: G,
-        del_punctuation: bool,
-        del_stopword: bool,
-        del_digit: bool,
-        del_space: bool,
+        granularity: G = G.PARAGRAPH,
+        del_punctuation: bool = False,
+        del_stopword: bool = False,
+        del_digit: bool = False,
+        del_space: bool = False,
     ) -> List[dict]:
 
         dataset = []
@@ -50,24 +50,27 @@ class DataLoader:
         ):
             logger.info(f"load {pdf_path} data ...")
             data = Pdf.extract_text(pdf_path, granularity)
-            for d in data:
-                d['clean_text'] = self._cleaner(
-                    text=d['text'],
-                    del_punctuation=True,
-                    del_stopword=True,
-                    del_digit=True,
-                    del_space=True,
-                )
-            dataset.extend(data)
-        return dataset
+            if self._cleaner is None:
+                return data
+            else:
+                for d in data:
+                    d['clean_text'] = self._cleaner(
+                        text=d['text'],
+                        del_punctuation=True,
+                        del_stopword=True,
+                        del_digit=True,
+                        del_space=True,
+                    )
+                dataset.extend(data)
+                return dataset
 
     def load_data_from_json(
         self,
-        del_punctuation: bool,
-        del_stopword: bool,
-        del_digit: bool,
-        del_space: bool,
-        json_parser: Callable,
+        del_punctuation: bool = False,
+        del_stopword: bool = False,
+        del_digit: bool = False,
+        del_space: bool = False,
+        json_parser: Callable = lambda x: x,
     ) -> List[dict]:
         pass
 
