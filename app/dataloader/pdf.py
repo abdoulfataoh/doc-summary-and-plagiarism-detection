@@ -46,7 +46,7 @@ class Pdf():
 
         elif granularity == G.PAGE:
             for page in doc:
-                page_number = page.number + 1
+                page_number = page.number
                 page_text = page.get_text()
                 page = Page.to_dict(
                     filename=filename,
@@ -57,7 +57,7 @@ class Pdf():
 
         elif granularity == G.PARAGRAPH:
             for page in doc:
-                page_number = page.number + 1
+                page_number = page.number
                 blocks = page.get_text('blocks', sort=True)
                 for block in blocks:
                     if block[6] == 0:  # if block contain text
@@ -98,7 +98,7 @@ class Pdf():
         coordinates: Tuple[float, float, float, float],
         text: str,
         **kwargs
-    ) -> None: 
+    ) -> None:
         if type(document) is not fitz.fitz.Document:
             document = fitz.open(document)
 
@@ -122,7 +122,7 @@ class Pdf():
                 fontsize=fontsize,
                 fontname=fontname,
             )
-        except:
+        except Exception:
             page.insert_textbox(
                 rect,
                 text,
