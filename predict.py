@@ -3,7 +3,6 @@
 from typing import Callable
 from typing import Generator
 from pathlib import Path
-import shutil
 import pickle
 
 from sklearn.metrics.pairwise import cosine_similarity
@@ -90,18 +89,18 @@ def predict_summary(
         model: summary_model,
         doc_dataloader: dt,
         max_tokens: int = 64,
-) -> Generator:  
+) -> Generator:
     document_path = doc_dataloader._files[0]
     document_filename = document_path.name
     document_fitz = fitz.open(document_path)
     to_summarize_section: list = []
-   
+
     for data in doc_dataloader.load_data_from_pdf():
         text = data['text']
         words_number = len(text.replace('\n', ' ').split())
         if words_number >= settings.SUMMARY_SECTION_MIN_WORDS:
             to_summarize_section.append(data)
-        
+
     progress_100 = len(to_summarize_section)
     progress_step = 100 / progress_100
     progress = 0
@@ -127,7 +126,7 @@ def predict_summary(
         )
         yield(
             {
-            'progress': progress,
+                'progress': progress,
             }
         )
 
