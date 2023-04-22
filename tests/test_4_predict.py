@@ -9,7 +9,10 @@ from app.models.plagiarism import AllMiniLML6V2
 from app.models.plagiarism import DistiluseBaseMultilingualV1
 from app.models.plagiarism import Doc2vec
 from app.models.plagiarism import CamembertLarge
+from app.models.summarize import BarthezOrange
+from app.models.summarize import OpenAi
 from predict import predict_plagiarism
+from predict import predict_summary
 
 
 @pytest.fixture
@@ -37,3 +40,9 @@ def test_predict_plagiarism(dt):
             threshold=50
         )
         assert predictions != []
+
+
+def test_predict_summary(dt):
+    models = [
+    ]
+    pass
