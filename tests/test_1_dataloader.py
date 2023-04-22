@@ -14,7 +14,7 @@ def test_dataloader():
     )
 
     assert dataset[0]['filename'] == 'doc.pdf'
-    assert dataset[0]['page_number'] == 1
+    assert dataset[0]['page_number'] == 0
     assert dataset[0]['paragraph_number'] == 1
     assert dataset[0]['text'] == '1ere Page\n'
     assert dataset[0]['clean_text'] == '1ere page'
