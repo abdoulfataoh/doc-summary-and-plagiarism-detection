@@ -35,7 +35,14 @@ model_name = st.sidebar.selectbox(
 )
 
 model_class = models[model_name]
-model = model_class()
+if model_name == 'OpenAi':
+    model: OpenAi
+    model = model_class(
+        api_key=settings.OPENAI_API_KEY,
+        model_name='text-davinci-003',
+    )
+else:
+    model = model_class()
 
 section_min_words = st.sidebar.slider('Choose threshold', 40, 200, 50)
 uploaded_file = st.file_uploader("Upload your document", type=['pdf'])
