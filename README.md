@@ -76,7 +76,9 @@ In this project, we use deep learning models for the purpose of plagiarism detec
 
 
 #### Summarize
-...
+
+- Predict
+![predict](https://github.com/abdoulfataoh/doc-summary-and-plagiarism-detection/blob/main/docs/summary_predict.png)
 
 ### Usage with streamlit
 
@@ -94,7 +96,7 @@ In this project, we use deep learning models for the purpose of plagiarism detec
 2. Create embeddings
 ```bash
   make embeddings
-``` 
+```
 
 3. Run the streamlit server to use the app
 ```bash
