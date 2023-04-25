@@ -39,7 +39,7 @@ if model_name == 'OpenAi':
     model: OpenAi
     model = model_class(
         api_key=settings.OPENAI_API_KEY,
-        model_name='text-davinci-003',
+        model_name=settings.OPENAI_MODELS[0],
     )
 else:
     model = model_class()
