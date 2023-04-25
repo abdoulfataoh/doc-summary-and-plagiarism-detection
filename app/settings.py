@@ -41,7 +41,7 @@ SPACY_MODEL_NAME = env('SPACY_MODEL', 'fr_core_news_sm')
 NLTK_LANGUAGE = env('NLTK_LANGUAGE', 'french')
 
 # [ OPENAI ]
-OPENAI_API_KEY = env('OPENAI_API_TOKEN', '')
+OPENAI_API_KEY = env('OPENAI_API_KEY', '')
 OPENAI_MODELS = [
     'text-davinci-003', 
 ]

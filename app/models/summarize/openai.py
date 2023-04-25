@@ -34,7 +34,7 @@ class OpenAi(SummarizeModelInterface):
     def summarization_task(
             self,
             input: str,
-            max_token: int,
+            max_tokens: int,
             top_p: float = 1.0,
     ) -> str:
         ask = 'Resume moi moi ce texte:\n{input}'
@@ -42,7 +42,7 @@ class OpenAi(SummarizeModelInterface):
             model=self._model_name,
             prompt=ask,
             temperature=self._temperature,
-            max_tokens=max_token,
+            max_tokens=max_tokens,
             top_p=top_p,
             frequency_penalty=self._frequency_penalty,
             presence_penalty=self._presence_penalty,
