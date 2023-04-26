@@ -8,7 +8,7 @@
 
 
 ### Description
-In this project, we use deep learning models for the purpose of plagiarism detection and document summarization.
+In this project, we use deep learning models for plagiarism detection and document synthesis purposes.
 ### Config
 
 - Clone the project
