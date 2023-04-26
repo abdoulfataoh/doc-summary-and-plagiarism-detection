@@ -46,6 +46,7 @@ OPENAI_MODELS = [
     'text-davinci-003',
 ]
 
+
 # [ Granulary ]
 class Granularity(Enum):
     WORD = 'WORD'

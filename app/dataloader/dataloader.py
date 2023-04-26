@@ -44,7 +44,7 @@ class DataLoader:
     ) -> List[dict]:
 
         dataset = []
-        
+
         for pdf_path in track(
             self._files,
             description="pdf text extractor"
@@ -73,7 +73,7 @@ class DataLoader:
         del_space: bool = False,
         json_parser: Callable = lambda x: x,
     ) -> List[dict]:
-        pass
+        raise Exception("NotImplementedException")
 
     @property
     def text_cleaner(self) -> Callable:
