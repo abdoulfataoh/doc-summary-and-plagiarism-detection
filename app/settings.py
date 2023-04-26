@@ -43,9 +43,8 @@ NLTK_LANGUAGE = env('NLTK_LANGUAGE', 'french')
 # [ OPENAI ]
 OPENAI_API_KEY = env('OPENAI_API_KEY', '')
 OPENAI_MODELS = [
-    'text-davinci-003', 
+    'text-davinci-003',
 ]
-
 
 # [ Granulary ]
 class Granularity(Enum):
