@@ -34,7 +34,8 @@ In this project, we use deep learning models for plagiarism detection and docume
 ```bash
   python -m spacy download en_core_web_sm
   python -m spacy download fr_core_news_sm
-  python -m nltk.downloader punkt
+  python -c "import nltk;nltk.download('punkt')"
+  python -c "import nltk;nltk.download('stopwords')"
 ```
 
 - (Optional) Use test configuration and file
