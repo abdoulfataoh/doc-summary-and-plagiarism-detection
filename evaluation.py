@@ -17,13 +17,13 @@ class EvaluateSummary():
         self._rouge = evaluate.load('rouge')
         self._predictions = []
         self._references = []
-        
+
         with open(summary_dict_path, 'r') as f:
             data = json.load(f)
             for d in data:
                 self._predictions.append(d['text'])
                 self._references.append(d['summary'])
-    
+
     def compute(self):
         results = self._rouge.compute(
             predictions=self._predictions,
@@ -39,4 +39,3 @@ if __name__ == '__main__':
     )
     r = eval_summary.compute()
     print(r)
-                
