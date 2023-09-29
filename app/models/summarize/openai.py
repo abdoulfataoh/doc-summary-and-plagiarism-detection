@@ -37,7 +37,7 @@ class OpenAi(SummarizeModelInterface):
             max_tokens: int,
             top_p: float = 1.0,
     ) -> str:
-        ask = 'Resume moi moi ce texte:\n{input}'
+        ask = 'Resume moi ce texte:\n{input}'
         response = self._openai.Completion.create(
             model=self._model_name,
             prompt=ask,
